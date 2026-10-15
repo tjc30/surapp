@@ -1,0 +1,67 @@
+#V2
+INFO FOR ROOT;
+USE NS main; INFO FOR NS;
+USE NS main DB main; INFO FOR DB;
+INFO FOR ROOT;
+USE NS main DB main; CREATE temps:1850 SET year = 1850; SELECT * FROM temps:1850; DELETE temps:1850;
+USE NS main DB main;
+DEFINE TABLE temps SCHEMAFULL;
+DEFINE FIELD entity ON TABLE temps TYPE string;
+DEFINE FIELD code ON TABLE temps TYPE string;
+DEFINE FIELD year ON TABLE temps TYPE int;
+DEFINE FIELD average ON TABLE temps TYPE float;
+DEFINE FIELD lower_bound ON TABLE temps TYPE float;
+DEFINE FIELD upper_bound ON TABLE temps TYPE float;
+INFO FOR DB;
+USE NS main DB main; REMOVE TABLE temps; INFO FOR DB;
+USE NS main DB main;
+CREATE temps:1900 SET year = 1900, average = -0.08;
+CREATE temps:1901 SET year = 1901, average = -0.15;
+CREATE temps:1902 SET year = 1902, average = -0.28;
+SELECT * FROM temps:1900..=1902;
+REMOVE TABLE temps;
+USE NS main DB main;
+DEFINE TABLE temps SCHEMALESS;
+CREATE temps:1850 SET year = 1850, average = -0.06;
+DEFINE TABLE temperature_anomaly AS SELECT * FROM temps;
+SELECT * FROM temperature_anomaly;
+REMOVE TABLE temperature_anomaly;
+REMOVE TABLE temps;
+SELECT count() FROM temps GROUP ALL; SELECT year, average FROM temps:2024..=2026;
+INFO FOR DB;
+SELECT count() FROM temps GROUP ALL;\n
+SELECT year, average, lower_bound, upper_bound FROM temps:2020..=2026;\n
+SELECT year, average FROM temps WHERE year >= 2020 ORDER BY year ASC;\n
+SELECT * FROM temperature_anomaly WHERE year = 2026;\n
+
+USE NS tc-climate DB tc-climate;
+DEFINE TABLE co2 SCHEMAFULL;
+DEFINE FIELD year ON TABLE co2 TYPE int;
+DEFINE FIELD co2_ppm ON TABLE co2 TYPE float;
+DEFINE INDEX idx_co2_year ON TABLE co2 COLUMNS year;
+SELECT count() FROM co2 GROUP ALL;
+SELECT * FROM co2:1959..=2025;
+SELECT year, co2_ppm FROM co2 ORDER BY year ASC;
+
+# Metadata Fields Added
+USE NS tc-climate DB tc-climate;
+DEFINE TABLE co2 SCHEMAFULL;
+DEFINE FIELD entity ON TABLE co2 TYPE string;
+DEFINE FIELD source ON TABLE co2 TYPE string;
+DEFINE FIELD location ON TABLE co2 TYPE string;
+DEFINE FIELD unit ON TABLE co2 TYPE string;
+DEFINE FIELD year ON TABLE co2 TYPE int;
+DEFINE FIELD co2_ppm ON TABLE co2 TYPE float;
+DEFINE INDEX idx_co2_year ON TABLE co2 COLUMNS year;
+SELECT count() FROM co2 GROUP ALL;
+SELECT * FROM co2:1959..=2025;
+SELECT year, co2_ppm, entity, source, location, unit FROM co2 ORDER BY year ASC;
+
+# Unified on default namespace main
+USE NS main DB main;
+INFO FOR DB;
+SELECT count() FROM temps GROUP ALL;
+SELECT count() FROM co2 GROUP ALL;
+SELECT count() FROM co2_noaa GROUP ALL;
+SELECT count() FROM data_sources GROUP ALL;
+SELECT * FROM data_sources;

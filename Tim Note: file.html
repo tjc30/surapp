@@ -1,0 +1,26 @@
+Tim Note: file (add to bottom)
+Git Fix*************
+Created .gitignore
+Ran command: `git init`
+Ran command: `git branch -m main; git config user.name; git config user.email`
+Ran command: `git config --get user.name || echo "No user.name"`
+Ran command: `git config user.name "timu" && git config user.email "timu@localhost"`
+Ran command: `git status`
+Ran command: `git add . && git commit -m "Initial commit: Planetary Climate Dashboard"`
+Ran command: `git status; git log -n 1 --oneline`
+
+The Git repository has been initialized and configured for [surapp](file:///home/timu/surapp):
+
+1. **Configured [`.gitignore`](file:///home/timu/surapp/.gitignore)**:
+* Ignored heavy and volatile runtime artifacts: `node_modules/`, `dist/`, `target/`, `.venv/`, `__pycache__/`, `*.log`,
+and SurrealDB's database store in `data/`.
+2. **Initialized Repository**:
+* Created local Git repository and set the default branch to `main`.
+* Staged all relevant source code, configuration files, and documentation.
+3. **Initial Commit Created**:
+* Initial commit `9ea9f95`: *"Initial commit: Planetary Climate Dashboard"* (53 files committed).
+* Working tree is now clean (`git status` reports nothing to commit).
+
+Any build tools, IDE extensions, or terminal scripts expecting a Git repository will now run without `fatal: not a git
+repository` errors.
+************************************

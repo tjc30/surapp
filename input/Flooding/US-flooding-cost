@@ -1,0 +1,205 @@
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Decadal data for US Billion-Dollar Disasters: Tropical Cyclones (Coastal Surge/Flooding) vs Inland Flooding
+(1980-2024)
+# Source: NOAA NCEI U.S. Billion-Dollar Weather and Climate Disasters (CPI-adjusted to 2024 dollars)
+# Note: 2020-2024 represents a 5-year half-decade.
+
+decades = ['1980–1989', '1990–1999', '2000–2009', '2010–2019', '2020–2024 (5 yrs)']
+
+# NOAA NCEI Tropical Cyclones cost ($B CPI-adjusted)
+# 1980s: 46.5, 1990s: 125.8, 2000s: 436.0, 2010s: 536.3, 2020-2024: 398.6 (Total = 1543.2)
+tropical_cyclones_cost = [46.5, 125.8, 436.0, 536.3, 398.6]
+
+# Inland Flooding cost ($B CPI-adjusted)
+# 1980s: 16.2 (e.g. 1983 Western, 1986 California), 1990s: 62.4 (1993 Midwest flood was ~$44B), 2000s: 23.5, 2010s: 75.8
+(2011, 2016, 2019 floods), 2020-2024: 25.1
+inland_flooding_cost = [16.2, 62.4, 23.5, 75.8, 25.1]
+
+total_flood_related = [tc + f for tc, f in zip(tropical_cyclones_cost, inland_flooding_cost)]
+
+df_costs = pd.DataFrame({
+'Decade': decades,
+'Coastal_Tropical_Cyclones_Billions': tropical_cyclones_cost,
+'Inland_Flooding_Billions': inland_flooding_cost,
+'Total_Flood_Related_Billions': total_flood_related
+})
+
+print(df_costs)
+print("Total Tropical Cyclones:", sum(tropical_cyclones_cost))
+print("Total Inland Flooding:", sum(inland_flooding_cost))
+print("Grand Total:", sum(total_flood_related))
+
+# Plotting stacked bar chart
+fig, ax = plt.subplots(figsize=(9, 5.5))
+
+x = range(len(decades))
+bar_width = 0.55
+
+p1 = ax.bar(x, df_costs['Coastal_Tropical_Cyclones_Billions'], width=bar_width, label='Coastal / Tropical Cyclones
+(Surge & Rain)', color='#1f77b4')
+p2 = ax.bar(x, df_costs['Inland_Flooding_Billions'], width=bar_width,
+bottom=df_costs['Coastal_Tropical_Cyclones_Billions'], label='Inland Flooding (Non-Tropical)', color='#2ca02c')
+
+ax.set_ylabel('Cost in Billions of USD (CPI-Adjusted to 2024)', fontsize=11)
+ax.set_title('U.S. Billion-Dollar Flood & Coastal Storm Losses by Decade (1980–2024)', fontsize=13, fontweight='bold',
+pad=15)
+ax.set_xticks(x)
+ax.set_xticklabels(decades, fontsize=10)
+ax.legend(frameon=True, loc='upper left')
+ax.grid(axis='y', linestyle='--', alpha=0.5)
+
+# Add value labels on top of bars
+for i, total in enumerate(total_flood_related):
+ax.annotate(f'${total:.1f}B',
+xy=(i, total),
+xytext=(0, 4),
+textcoords="offset points",
+ha='center', va='bottom', fontweight='bold', fontsize=10)
+
+plt.tight_layout()
+plt.show()
+
+```
+
+```text
+Decade Coastal_Tropical_Cyclones_Billions Inland_Flooding_Billions Total_Flood_Related_Billions
+0 1980–1989 46.5 16.2 62.7
+1 1990–1999 125.8 62.4 188.2
+2 2000–2009 436.0 23.5 459.5
+3 2010–2019 536.3 75.8 612.1
+4 2020–2024 (5 yrs) 398.6 25.1 423.7
+Total Tropical Cyclones: 1543.1999999999998
+Total Inland Flooding: 202.99999999999997
+Grand Total: 1746.2
+
+
+```
+
+The economic cost of flooding in the United States has accelerated dramatically since 1980, driven by coastal storms,
+intensifying inland downpours, and growing asset exposure. According to NOAA National Centers for Environmental
+Information (NCEI) and federal economic assessments, flood-related disasters represent the costliest natural disaster
+category in modern U.S. history.
+
+### U.S. Flood & Storm Surge Costs (NOAA Billion-Dollar Disasters, CPI-Adjusted)
+
+NOAA tracks weather events causing at least $1 billion in direct damage (adjusted to 2024 dollars). Across all hazard
+categories since 1980:
+
+* **Coastal Storms & Tropical Cyclones (Surge & Deluges):** Account for **$1,543.2 billion** across 67 events, averaging
+**$23.0 billion per event**. Over 50% of all cumulative billion-dollar disaster losses across the country stem from
+tropical cyclones making landfall.
+* **Inland Flooding (Non-Tropical Riverine & Flash Flooding):** Accounts for **$203.0 billion** across 45 discrete
+events, averaging **$4.5 billion per event**.
+* **Combined Impact:** Combined coastal surge and inland flooding events exceed **$1.74 trillion**, representing
+approximately 60% of all U.S. billion-dollar disaster losses since 1980.
+
+---
+
+### Decadal Cost Breakdown (1980–2024)
+
+| Decade | Coastal / Tropical Cyclones ($B) | Inland Flooding ($B) \vert{} Total Flood-Related Losses ($B) |
+| --- | --- | --- |
+| **1980–1989** | $46.5B | $16.2B |
+| **1990–1999** | $125.8B | $62.4B |
+| **2000–2009** | $436.0B | $23.5B |
+| **2010–2019** | $536.3B | $75.8B |
+| **2020–2024 (5 yrs)** | $398.6B | $25.1B |
+
+*(Note: The 2020–2024 period covers only five years but has already accumulated nearly 70% of the previous decade's
+entire 10-year total.)*
+
+---
+
+### Cost Trends Over Time
+
+The chart below illustrates the growth of decadal losses from coastal tropical events versus inland flooding:
+
+```python
+# Re-display the plot clearly with clean axis labels and formatting
+fig, ax = plt.subplots(figsize=(9, 5.2))
+
+x = range(len(decades))
+bar_width = 0.55
+
+p1 = ax.bar(x, df_costs['Coastal_Tropical_Cyclones_Billions'], width=bar_width, label='Coastal / Tropical Cyclones
+(Surge & Wind)', color='#1b75bb')
+p2 = ax.bar(x, df_costs['Inland_Flooding_Billions'], width=bar_width,
+bottom=df_costs['Coastal_Tropical_Cyclones_Billions'], label='Inland Flooding (Non-Tropical)', color='#2e9e66')
+
+ax.set_ylabel('Direct Losses ($ Billions, CPI-Adjusted)', fontsize=11)
+ax.set_title('U.S. Billion-Dollar Disaster Losses: Coastal vs. Inland Flooding (1980–2024)', fontsize=12,
+fontweight='bold', pad=12)
+ax.set_xticks(x)
+ax.set_xticklabels(decades, fontsize=10)
+ax.legend(frameon=True, loc='upper left')
+ax.grid(axis='y', linestyle='--', alpha=0.4)
+
+for i, total in enumerate(total_flood_related):
+ax.annotate(f'${total:.1f}B',
+xy=(i, total),
+xytext=(0, 4),
+textcoords="offset points",
+ha='center', va='bottom', fontweight='bold', fontsize=10)
+
+plt.tight_layout()
+plt.show()
+
+```
+
+### Broader Annual Economic Burden
+
+Beyond catastrophic billion-dollar disasters, chronic nuisance flooding and local flash floods incur ongoing costs.
+According to comprehensive federal estimates by the U.S. Joint Economic Committee:
+
+* **Annual Total Economic Cost:** Estimated between **$179.8 billion and $496.0 billion annually** across the U.S.
+* **Infrastructure Protection Needs:** $68.9 billion to $344.5 billion required for coastal seawalls, levee upgrades,
+and stormwater retrofits.
+* **Direct & Indirect Commercial Impacts:** $58.7 billion to $74.3 billion annually in commercial disruption, downtime,
+and physical asset repair.
+* **Residential Losses:** Over $15 billion annually in residential damage, with another $5.4 billion to $10.8 billion in
+permanent property value losses directly attributed to coastal sea-level rise.
+
+---
+
+### Dashboard Data Schema
+
+Here is the decadal cost series ready to integrate into your dashboard:
+
+```json
+[
+{
+"period": "1980–1989",
+"coastalTropicalBillions": 46.5,
+"inlandFloodBillions": 16.2,
+"totalFloodDisasterBillions": 62.7
+},
+{
+"period": "1990–1999",
+"coastalTropicalBillions": 125.8,
+"inlandFloodBillions": 62.4,
+"totalFloodDisasterBillions": 188.2
+},
+{
+"period": "2000–2009",
+"coastalTropicalBillions": 436.0,
+"inlandFloodBillions": 23.5,
+"totalFloodDisasterBillions": 459.5
+},
+{
+"period": "2010–2019",
+"coastalTropicalBillions": 536.3,
+"inlandFloodBillions": 75.8,
+"totalFloodDisasterBillions": 612.1
+},
+{
+"period": "2020–2024",
+"coastalTropicalBillions": 398.6,
+"inlandFloodBillions": 25.1,
+"totalFloodDisasterBillions": 423.7
+}
+]
+
+```

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Planetary Climate Observatory – System Architecture & Software Report</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'dark',
+      themeVariables: {
+        darkMode: true,
+        background: '#0B1120',
+        primaryColor: '#0284C7',
+        primaryTextColor: '#F8FAFC',
+        primaryBorderColor: '#38BDF8',
+        lineColor: '#60A5FA',
+        secondaryColor: '#1E293B',
+        tertiaryColor: '#0F172A'
+      }
+    });
+  </script>
+  <style>
+    :root {
+      --bg-body: #080C14;
+      --bg-card: #0F172A;
+      --bg-card-subtle: #1E293B;
+      --border-color: rgba(255, 255, 255, 0.1);
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+      --accent-blue: #38BDF8;
+      --accent-emerald: #10B981;
+      --accent-amber: #F59E0B;
+      --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      font-family: var(--font-main);
+      line-height: 1.65;
+      padding: 32px 24px 64px 24px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+    header {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(14, 116, 144, 0.2));
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 16px;
+      padding: 32px 36px;
+      margin-bottom: 32px;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.4);
+    }
+    .badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-blue);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      margin-bottom: 12px;
+    }
+    h1 {
+      font-size: 2.1rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      margin-bottom: 10px;
+      color: #FFF;
+    }
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+    .section-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 28px 32px;
+      margin-bottom: 28px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: #FFF;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 10px;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--accent-blue);
+      margin: 20px 0 10px 0;
+    }
+    p {
+      color: #CBD5E1;
+      font-size: 0.95rem;
+      margin-bottom: 14px;
+    }
+    .diagram-wrap {
+      background: #020617;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 0.88rem;
+      text-align: left;
+    }
+    th {
+      background: #020617;
+      color: var(--accent-blue);
+      font-weight: 700;
+      padding: 12px 16px;
+      border-bottom: 2px solid rgba(56, 189, 248, 0.25);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+    }
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      color: #E2E8F0;
+    }
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.03);
+    }
+    code {
+      font-family: var(--font-mono);
+      background: rgba(255, 255, 255, 0.08);
+      color: #38BDF8;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.82rem;
+    }
+    pre {
+      background: #020617;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 16px;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: #93C5FD;
+      margin: 14px 0;
+      line-height: 1.5;
+    }
+    .tier-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+    .tier-box {
+      background: var(--bg-card-subtle);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 18px 20px;
+    }
+    .tier-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+    .tier-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #FFF;
+      margin-bottom: 6px;
+    }
+    .tier-desc {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin-bottom: 0;
+    }
+    .callout {
+      background: rgba(56, 189, 248, 0.08);
+      border-left: 4px solid var(--accent-blue);
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      margin: 18px 0;
+      font-size: 0.88rem;
+      color: #E0F2FE;
+    }
+    footer {
+      text-align: center;
+      padding: 28px 0;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <span class="badge">Architecture & System Specification</span>
+      <h1>Planetary Climate Observatory</h1>
+      <p class="subtitle">
+        Comprehensive software report detailing component interactions, data ingestion pipelines, SurrealDB storage engine, Rust Axum backend API, and React SPA visualization layer.
+      </p>
+    </header>
+
+    <!-- SECTION 1 -->
+    <section class="section-card">
+      <h2>1. Architecture Overview & High-Level Topology</h2>
+      <p>
+        The <strong>Planetary Climate Observatory</strong> is a multi-tier scientific dashboard built for high-performance retrieval and visualization of decadal climate datasets (Global Temperature Anomalies, Holocene & Modern Atmospheric CO₂, Canadian Megafires, Regional Drought Indices, and Multi-Indicator Flood Disasters).
+      </p>
+
+      <div class="tier-grid">
+        <div class="tier-box" style="border-top: 3px solid #38BDF8;">
+          <div class="tier-title" style="color: #38BDF8;">Tier 1</div>
+          <div class="tier-name">Raw Data & Ingestion</div>
+          <p class="tier-desc">Authoritative inputs from NOAA, EPA, CFS/CWFIS, and EM-DAT transformed via Python into normalized database records.</p>
+        </div>
+        <div class="tier-box" style="border-top: 3px solid #10B981;">
+          <div class="tier-title" style="color: #10B981;">Tier 2</div>
+          <div class="tier-name">SurrealDB 3.3 Engine</div>
+          <p class="tier-desc">Persistent on-disk storage engine (SurrealKV / RocksDB) running on port 8000 with sub-millisecond query execution.</p>
+        </div>
+        <div class="tier-box" style="border-top: 3px solid #F59E0B;">
+          <div class="tier-title" style="color: #F59E0B;">Tier 3</div>
+          <div class="tier-name">Rust / Axum Gateway</div>
+          <p class="tier-desc">Asynchronous Tokio/Axum REST API server on port 3000 handling SurrealQL serialization, stats, and SPA asset serving.</p>
+        </div>
+        <div class="tier-box" style="border-top: 3px solid #EC4899;">
+          <div class="tier-title" style="color: #EC4899;">Tier 4</div>
+          <div class="tier-name">React 18 / Vite SPA</div>
+          <p class="tier-desc">Dark glassmorphism user interface with Chart.js dual-axis canvases, responsive KPI grids, and CSV export tools.</p>
+        </div>
+      </div>
+
+      <div class="diagram-wrap">
+        <pre class="mermaid">
+graph TD
+    subgraph Tier 1: Ingestion & Data Sources
+        DS1["NOAA Land-Ocean (1850–2026)"] --> P1["load_temps.py"]
+        DS2["CO2 Ice Cores & Mauna Loa"] --> P2["load_co2.py"]
+        DS3["Canada Wildfires (2000–2026)"] --> P3["load_wildfires.py"]
+        DS4["NOAA Regional PDSI (1950–2025)"] --> P4["drought-plott.py"]
+        DS5["NOAA / EPA / EM-DAT Floods"] --> P5["load_flooding.py"]
+        DS6["Institutional Citations"] --> P6["load_sources.py"]
+    end
+
+    subgraph Tier 2: SurrealDB 3.3 Engine (Port 8000)
+        P1 & P2 & P3 & P4 & P5 & P6 -->|HTTP SQL Ingestion| SDB[("SurrealDB surrealkv://data<br/>Namespace: main | Database: main")]
+        SDB --- T1[("temps")]
+        SDB --- T2[("co2")]
+        SDB --- T3[("wildfires")]
+        SDB --- T4[("drought_pdsi")]
+        SDB --- T5[("flood_trends & flood_costs")]
+        SDB --- T6[("sources")]
+    end
+
+    subgraph Tier 3: Rust Axum Server (Port 3000)
+        SDB <-->|JSON over HTTP /sql| AXUM["surapp-backend<br/>Axum 0.7 + Tokio"]
+        AXUM --- E1["/api/temps"]
+        AXUM --- E2["/api/co2 & /api/co2/noaa"]
+        AXUM --- E3["/api/wildfires"]
+        AXUM --- E4["/api/drought"]
+        AXUM --- E5["/api/flooding"]
+        AXUM --- E6["/api/stats"]
+        AXUM --- E7["/api/sources"]
+        AXUM --- STATIC["Static ServeDir (/frontend/dist)"]
+    end
+
+    subgraph Tier 4: React 18 Frontend SPA
+        STATIC --> UI["Browser Client SPA (Port 3000)"]
+        UI <-->|Fetch API Requests| AXUM
+    end
+        </pre>
+      </div>
+    </section>
+
+    <!-- SECTION 2 -->
+    <section class="section-card">
+      <h2>2. What Each Part Does</h2>
+
+      <h3>1. Data Ingestion Scripts (Python)</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Script</th>
+            <th>Input Source</th>
+            <th>Target Table</th>
+            <th>Responsibility</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>load_temps.py</code></td>
+            <td><code>input/NOAA world temps/aravg.mon...asc</code></td>
+            <td><code>temps</code></td>
+            <td>Parses 177 years (1850–2026) of NOAA annual land-ocean temperature anomalies and 95% uncertainty ranges.</td>
+          </tr>
+          <tr>
+            <td><code>load_co2.py</code></td>
+            <td><code>input/CO2/co2-concentration-long-term.csv</code> & <code>co2_annmean_mlo.txt</code></td>
+            <td><code>co2</code></td>
+            <td>Combines 10,000-year Antarctic ice cores (-10,000 BCE to modern) with continuous in-situ NOAA Mauna Loa measurements.</td>
+          </tr>
+          <tr>
+            <td><code>load_wildfires.py</code></td>
+            <td><code>input/Fires/canada-wildfires.csv</code></td>
+            <td><code>wildfires</code></td>
+            <td>Ingests 27 years of Canadian CFS/CWFIS wildfire totals, converting hectares to million acres and calculating megafire shifts.</td>
+          </tr>
+          <tr>
+            <td><code>drought-plott.py</code></td>
+            <td><code>input/Drought/pdsi-regional-divs.txt</code></td>
+            <td><code>drought_pdsi</code></td>
+            <td>Ingests 76 years of monthly PDSI comparing the arid West (Region 109) and humid Northeast (Region 101) with 24-month rolling means.</td>
+          </tr>
+          <tr>
+            <td><code>load_flooding.py</code></td>
+            <td><code>input/Flooding/global-and-US-flooding.txt</code> & <code>US_flooding-cost</code></td>
+            <td><code>flood_trends</code>, <code>flood_costs</code></td>
+            <td>Ingests high-tide flood days (NOAA CO-OPS), heavy rain area % (EPA), global disasters (EM-DAT), and decadal billion-dollar flood damages (NOAA NCEI).</td>
+          </tr>
+          <tr>
+            <td><code>load_sources.py</code></td>
+            <td>Institutional catalog</td>
+            <td><code>sources</code></td>
+            <td>Stores scientific provenance, citation links, update cadence, and institutional contacts.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>2. Database Layer (SurrealDB 3.3)</h3>
+      <p>
+        SurrealDB runs as a daemon process bound to <code>127.0.0.1:8000</code>. It persists data to disk in <code>/home/timu/surapp/data</code> using its high-speed SurrealKV/RocksDB storage engine. It provides ACID transactions, native SQL parsing, filtering, and aggregation.
+      </p>
+
+      <h3>3. Backend Gateway Server (Rust + Axum)</h3>
+      <p>
+        Located in <code>backend/src/main.rs</code>, this compiled binary serves the REST API and the frontend SPA:
+      </p>
+      <ul>
+        <li><strong>SurrealDB Bridge</strong>: Translates incoming HTTP requests into SurrealQL, dispatches them over local HTTP to port 8000, and deserializes results into typed Rust structures.</li>
+        <li><strong>Statistical Calculation Engine</strong>: Computes real-time leaderboards, baseline comparisons, and peak values.</li>
+        <li><strong>Static File Delivery</strong>: Serves the compiled production bundle from <code>frontend/dist</code> with <code>no-cache</code> headers so users always see the latest code without stale browser caches.</li>
+      </ul>
+
+      <h3>4. Frontend Visualization Application (React 18 + Vite)</h3>
+      <p>
+        The user interface in <code>frontend/src/</code> is composed of modular views:
+      </p>
+      <pre>
+App.jsx (Root Routing, Unit Toggles °C/°F, Data Hydration)
+├── Header.jsx (App Branding, Breadcrumbs, Database Status, Sync)
+├── MainMenu.jsx (Topic Directory, Category Filters, Search)
+├── TemperatureRiseView.jsx (177-Year Global Warming Anomaly & Leaderboard)
+├── Co2RiseView.jsx (10,000-Year Holocene Baseline vs. Modern Surge)
+├── WildfiresView.jsx (Canadian Forest Fires 2000–2026 Dual-Axis Chart)
+├── DroughtsView.jsx (West vs. Northeast PDSI Regional Divergence)
+├── FloodingView.jsx (Tidal Floods, Downpours, Disasters & Decadal Damages)
+├── DataSourcesView.jsx (Scientific Citations & Methodology)
+└── TopicPlaceholderView.jsx (Blueprints for Clean Energy & Sinks)
+      </pre>
+
+      <div class="callout">
+        <strong>UI Design Standard (AGENTS.md):</strong> All controls across the dashboard (view modes, dataset selectors, metric toggles) strictly follow a unified design standard: sleek dark slate inactive boxes (<code>#1E293B</code>) transitioning to radiant sky blue (<code>#38BDF8</code>) with 700-weight dark navy text when active.
+      </div>
+    </section>
+
+    <!-- SECTION 3 -->
+    <section class="section-card">
+      <h2>3. End-to-End Data Flow</h2>
+      <div class="diagram-wrap">
+        <pre class="mermaid">
+sequenceDiagram
+    autonumber
+    actor User as User Browser
+    participant Axum as Rust Backend (Port 3000)
+    participant DB as SurrealDB (Port 8000)
+    participant Disk as Local Data Storage
+
+    User->>Axum: GET / (Loads index.html & JS Bundle)
+    Axum-->>User: 200 OK (React SPA Assets)
+    User->>Axum: GET /api/stats, /api/temps, /api/co2, /api/wildfires, /api/flooding
+    Axum->>DB: POST /sql with SurrealQL Queries
+    DB->>Disk: Reads rocksdb storage
+    Disk-->>DB: Data Rows
+    DB-->>Axum: JSON Result Sets
+    Axum-->>User: Structured JSON Responses
+    User->>User: React renders charts, KPI cards, and tables
+        </pre>
+      </div>
+    </section>
+
+    <!-- SECTION 4 -->
+    <section class="section-card">
+      <h2>4. Orchestration & Lifecycle Scripts</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Script</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>start_app.sh</code></td>
+            <td>Automated startup: ensures SurrealDB is running, checks that all tables have records (auto-running loaders if empty), compiles the frontend with Vite, launches Axum backend in background, and verifies API health.</td>
+          </tr>
+          <tr>
+            <td><code>start.sh</code></td>
+            <td>Starts the standalone SurrealDB server process on <code>127.0.0.1:8000</code>.</td>
+          </tr>
+          <tr>
+            <td><code>stop_app.sh</code></td>
+            <td>Cleanly shuts down both the Axum backend and SurrealDB background processes.</td>
+          </tr>
+          <tr>
+            <td><code>status.sh</code></td>
+            <td>Checks whether SurrealDB and Axum are running and displays active process IDs.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <footer>
+      Planetary Climate Observatory • Technical Architecture & Software Report • Generated Locally in Workspace
+    </footer>
+  </div>
+</body>
+</html>
