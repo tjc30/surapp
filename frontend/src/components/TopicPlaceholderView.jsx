@@ -11,7 +11,6 @@ import {
   Layers,
   Database,
   BarChart3,
-  Clock,
   Sparkles,
   ExternalLink,
   CheckCircle2,
@@ -43,17 +42,13 @@ export default function TopicPlaceholderView({ topic, sources = [], onNavigate }
   return (
     <div className="placeholder-view-container">
       {/* Dataset status appears in the shared header. */}
-      <AreaDataStatus>
-        {isCo2 ? (
-            <span className="badge-ready">
-              <CheckCircle2 size={12} /> Automated Data Feed Loaded (1,874 Records)
-            </span>
-          ) : (
-            <span className="badge-blank-indicator">
-              <Clock size={12} /> Blank Selection / In Development
-            </span>
-          )}
-      </AreaDataStatus>
+      {isCo2 && (
+        <AreaDataStatus>
+          <span className="badge-ready">
+            <CheckCircle2 size={12} /> Automated Data Feed Loaded (1,874 Records)
+          </span>
+        </AreaDataStatus>
+      )}
 
       {/* Topic Hero Card */}
       <div
@@ -75,10 +70,9 @@ export default function TopicPlaceholderView({ topic, sources = [], onNavigate }
           </div>
 
           <div className="placeholder-hero-info">
-            <div className="placeholder-category-pill">
+            <div className="placeholder-category-pill area-hero-category">
               {topic.categoryLabel}
             </div>
-            <h2 className="placeholder-hero-title">{topic.title}</h2>
             <p className="placeholder-hero-desc">{topic.description}</p>
           </div>
         </div>

@@ -1,3 +1,5 @@
+import useDataset from '../hooks/useDataset';
+import { DatasetStatus } from './DatasetView';
 import AreaDataStatus from './AreaDataStatus';
 import React, { useState, useMemo, useEffect } from 'react';
 import {
@@ -38,76 +40,14 @@ ChartJS.register(
 );
 
 // Historical climate & human civilization reference milestones
-const MILESTONES = [
-  {
-    year: -10000,
-    title: 'Start of the Holocene Epoch',
-    co2: 248.9,
-    description: 'Retreat of continental ice sheets and emergence of early human agriculture and settlements.',
-    tag: 'Paleoclimate Baseline',
-  },
-  {
-    year: -5000,
-    title: 'Mid-Holocene Climate Optimum',
-    co2: 261.2,
-    description: 'Warm, stable global climate supporting early agricultural societies in Mesopotamia, the Nile, and Indus valleys.',
-    tag: 'Agricultural Expansion',
-  },
-  {
-    year: -2500,
-    title: 'Egyptian Old Kingdom & Bronze Age',
-    co2: 265.8,
-    description: 'Pyramids of Giza constructed; atmospheric CO2 remains strictly locked between 260 and 270 ppm.',
-    tag: 'Ancient Civilizations',
-  },
-  {
-    year: 0,
-    title: 'Common Era / Roman Empire',
-    co2: 276.4,
-    description: 'Peak Roman and Han Dynasty agricultural land use; stable atmospheric baseline continues.',
-    tag: 'Classical Era',
-  },
-  {
-    year: 1750,
-    title: 'Onset of Industrial Revolution',
-    co2: 277.0,
-    description: 'Invention of James Watt\'s steam engine; beginning of coal-powered mechanization in Britain.',
-    tag: 'Pre-Industrial Benchmark',
-  },
-  {
-    year: 1850,
-    title: 'Official IPCC Benchmark (1850–1900)',
-    co2: 285.2,
-    description: 'Global industrialization gathers pace. Pre-industrial atmospheric benchmark conventionally set at ~280 ppm.',
-    tag: 'Industrial Dawn',
-  },
-  {
-    year: 1958,
-    title: 'Keeling Curve Initiated',
-    co2: 315.3,
-    description: 'Dr. Charles David Keeling begins continuous in-situ atmospheric monitoring at NOAA Mauna Loa Observatory, Hawaii.',
-    tag: 'Instrumental Era',
-  },
-  {
-    year: 2013,
-    title: 'Breaching 400 ppm Threshold',
-    co2: 396.5,
-    description: 'Daily Mauna Loa CO2 readings permanently cross 400 ppm for the first time in over 3 million years (Pliocene epoch).',
-    tag: 'Critical Planetary Boundary',
-  },
-  {
-    year: 2025,
-    title: 'Present Day Atmospheric Peak',
-    co2: 427.35,
-    description: 'Global annual mean exceeds 426 ppm (427.35 ppm NOAA Mauna Loa), +52% above the 10,000-year Holocene baseline.',
-    tag: 'Modern Record Peak',
-  },
-];
 
 export default function Co2RiseView({
   onNavigate,
   sources = [],
 }) {
+  const milestoneState = useDataset('co2_milestones');
+  const MILESTONES = useMemo(() => [...milestoneState.data].sort((a, b) => a.year - b.year), [milestoneState.data]);
+
   const [co2Data, setCo2Data] = useState([]);
   const [noaaData, setNoaaData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -353,6 +293,7 @@ export default function Co2RiseView({
 
     return { datasets };
   }, [
+    MILESTONES,
     co2Data,
     noaaData,
     currentFilteredData,
@@ -517,6 +458,7 @@ export default function Co2RiseView({
 
   return (
     <div className="temp-view-container co2-view-container">
+      <DatasetStatus {...milestoneState} empty={!milestoneState.data.length} />
       {/* Dataset status appears in the shared header. */}
       <AreaDataStatus>
         <span className="badge-ready">
@@ -528,13 +470,10 @@ export default function Co2RiseView({
       {/* Hero Headline Section */}
       <section className="detail-hero-banner co2-hero-banner">
         <div className="detail-hero-content">
-          <div className="detail-category-badge">
+          <div className="detail-category-badge area-hero-category">
             <Activity size={14} />
             <span>Greenhouse Gas Driver • Planetary Carbon Cycle</span>
           </div>
-          <h2 className="detail-hero-title">
-            Atmospheric CO₂ Level Rise: <span className="gradient-text-sky">10,000-Year Record</span>
-          </h2>
           <p className="detail-hero-desc">
             Direct comparison of multi-millennial Antarctic ice core air bubbles (EPICA Dome C & Law Dome)
             with modern high-precision optical in-situ measurements at NOAA Mauna Loa Observatory.
@@ -655,11 +594,11 @@ export default function Co2RiseView({
         {/* Top Header Strip with Title & "Full 10,000..." line */}
         <div className="chart-card-header">
           <div className="chart-header-left">
-            <div className="chart-icon-box">
-              <Activity size={20} className="text-sky" />
-            </div>
             <div>
-              <h3 className="chart-title">Atmospheric Carbon Dioxide Trajectory</h3>
+              <h3 className="chart-title co2-trajectory-title">
+                <Activity size={20} className="text-sky" aria-hidden="true" />
+                <span>Atmospheric Carbon Dioxide Trajectory</span>
+              </h3>
               <p className="chart-subtitle">
                 {timePreset === '10k' && 'Full 10,000-Year Holocene Epoch Perspective (10,000 BCE – 2025 CE)'}
                 {timePreset === '2k' && 'Two Millennia Perspective: Roman Empire to Anthropocene (0 – 2025 CE)'}

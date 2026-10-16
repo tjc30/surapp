@@ -1,3 +1,5 @@
+import useDataset from '../hooks/useDataset';
+import { DatasetStatus } from './DatasetView';
 import AreaDataStatus from './AreaDataStatus';
 import React, { useState, useMemo } from 'react';
 import {
@@ -46,80 +48,6 @@ ChartJS.register(
 );
 
 // Historical Drought Milestones in North America (1950-2025)
-const DROUGHT_MILESTONES = [
-  {
-    year: 1950,
-    title: '1950s Southwest & Southern Plains Aridity',
-    region: 'West / Southwest',
-    pdsi: -2.40,
-    type: 'drought',
-    tag: 'Baseline Period',
-    description: 'Post-WWII prolonged dry spell affecting California, Nevada, and the Southwest with repeated seasonal deficits.',
-  },
-  {
-    year: 1965,
-    title: 'Historic Northeast Drought of the 1960s',
-    region: 'Northeast',
-    pdsi: -4.50,
-    type: 'drought',
-    tag: 'All-Time East Record',
-    description: 'Severe multi-year drought across New England, New York, and the Mid-Atlantic. Reservoir levels fell to historic lows, triggering regional emergency rationing.',
-  },
-  {
-    year: 1977,
-    title: '1976–1977 California Severe Drought Crisis',
-    region: 'West (CA/NV)',
-    pdsi: -5.85,
-    type: 'drought',
-    tag: 'Historic Desiccation',
-    description: 'One of the sharpest 2-year precipitation deficits in modern West Coast history. Snowpacks virtually disappeared, sparking modern statewide water management reforms.',
-  },
-  {
-    year: 1983,
-    title: '1982–1983 Super El Niño Moisture Surplus',
-    region: 'West (CA/NV)',
-    pdsi: 4.88,
-    type: 'moist',
-    tag: 'Record Wet Spell',
-    description: 'Intense atmospheric rivers dumped unprecedented rain and snow across California and Nevada, producing the highest wet index anomaly (+4.88) in the 76-year record.',
-  },
-  {
-    year: 1991,
-    title: '1987–1992 Six-Year Western Drought',
-    region: 'West (CA/NV)',
-    pdsi: -3.80,
-    type: 'drought',
-    tag: 'Prolonged Deficit',
-    description: 'Six consecutive dry years in California depleted state reservoirs to 32% of capacity, accelerating groundwater overdraft across the Central Valley.',
-  },
-  {
-    year: 2014,
-    title: '2012–2016 Exceptional California Megadrought',
-    region: 'West (CA/NV)',
-    pdsi: -5.10,
-    type: 'drought',
-    tag: 'State Emergency',
-    description: 'Record-high temperatures exacerbated precipitation deficits, creating a "hot drought." Governor Brown declared a statewide state of emergency with mandatory 25% urban reductions.',
-  },
-  {
-    year: 2021,
-    title: '2020–2022 Western North America Megadrought Peak',
-    region: 'West (CA/NV)',
-    pdsi: -4.85,
-    type: 'drought',
-    tag: '1,200-Year Event',
-    description: 'Tree-ring studies confirmed 2000–2022 was the driest 22-year period in southwestern North America since at least 800 CE. Lake Mead and Lake Powell dropped to record crisis levels.',
-  },
-  {
-    year: 2025,
-    title: '2024–2025 Trans-Continental Regional Divergence',
-    region: 'West & Northeast',
-    pdsi: -3.22,
-    type: 'divergence',
-    tag: 'Current State',
-    description: 'While California experienced atmospheric river recovery in 2023, the Northeast plunged into an unexpected severe flash drought in late 2024–2025 (-3.22 PDSI).',
-  },
-];
 
 function getPdsiClassification(val) {
   if (val >= 4.0) return { label: 'Extremely Moist', color: '#0284C7', bg: 'rgba(2, 132, 199, 0.15)' };
@@ -141,6 +69,9 @@ export default function DroughtsView({
   sources = [],
   onRefresh,
 }) {
+  const milestoneState = useDataset('drought_milestones');
+  const DROUGHT_MILESTONES = useMemo(() => [...milestoneState.data].sort((a, b) => a.year - b.year), [milestoneState.data]);
+
   const [activeTab, setActiveTab] = useState('chart'); // 'chart' | 'milestones' | 'table'
   const [timePreset, setTimePreset] = useState('all'); // 'all' | '1950-1979' | '1980-1999' | '2000-2025' | '2010-2025'
   const [regionFilter, setRegionFilter] = useState('both'); // 'both' | 'west' | 'northeast'
@@ -416,6 +347,7 @@ export default function DroughtsView({
 
   return (
     <div className="view-container">
+      <DatasetStatus {...milestoneState} empty={!milestoneState.data.length} />
       {/* Dataset status appears in the shared header. */}
       <AreaDataStatus>
         <span className="badge-ready">
@@ -438,14 +370,11 @@ export default function DroughtsView({
           </div>
           <div className="wildfires-hero-text">
             <div
-              className="placeholder-category-pill"
+              className="placeholder-category-pill area-hero-category"
               style={{ color: '#EAB308', borderColor: 'rgba(234, 179, 8, 0.3)' }}
             >
               Ecological & Agricultural Impact • North America
             </div>
-            <h2 className="wildfires-hero-title">
-              Severe Droughts & Regional Aridity Divergence (1950–2025)
-            </h2>
             <p className="wildfires-hero-desc">
               A 76-year monthly comparative study of regional aridity between the <strong>American West (Region 109: CA/NV)</strong> and the <strong>Northeast (Region 101)</strong>.
               Tracking severe multidecadal megadrought desiccation versus humid Atlantic moisture regimes using authoritative NOAA Palmer Drought Severity Index (PDSI) measurements.

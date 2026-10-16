@@ -13,12 +13,12 @@ The application follows a modern **four-tier decoupled architecture**:
 ```mermaid
 graph TD
     subgraph Data Sources & Ingestion Tier
-        DS1["NOAA Land-Ocean (1850-2026)"] --> P1["load_temps.py"]
-        DS2["CO2 Ice Cores & Mauna Loa"] --> P2["load_co2.py"]
-        DS3["Canada Wildfires (2000-2026)"] --> P3["load_wildfires.py"]
-        DS4["NOAA Regional PDSI (1950-2025)"] --> P4["drought-plott.py"]
-        DS5["NOAA / EPA / EM-DAT Floods"] --> P5["load_flooding.py"]
-        DS6["Institutional Citations"] --> P6["load_sources.py"]
+        DS1["NOAA Land-Ocean (1850-2026)"] --> P1["python/load_temps.py"]
+        DS2["CO2 Ice Cores & Mauna Loa"] --> P2["python/load_co2.py"]
+        DS3["Canada Wildfires (2000-2026)"] --> P3["python/load_wildfires.py"]
+        DS4["NOAA Regional PDSI (1950-2025)"] --> P4["python/drought-plott.py"]
+        DS5["NOAA / EPA / EM-DAT Floods"] --> P5["python/load_flooding.py"]
+        DS6["Institutional Citations"] --> P6["python/load_sources.py"]
     end
 
     subgraph Database Tier [SurrealDB 3.3 Engine]
@@ -65,12 +65,12 @@ The application ingests historical datasets from authoritative institutions. Rat
 
 | Ingestion Script | Input Source File | Target SurrealDB Table | Transformations Performed |
 | :--- | :--- | :--- | :--- |
-| `load_temps.py` | `input/NOAA world temps/aravg.mon...asc` | `temps` | Parses 177 years (1850–2026) of NOAA annual land-ocean temperature anomalies and 95% uncertainty ranges (`lower_bound`, `upper_bound`). |
-| `load_co2.py` | `input/CO2/co2-concentration-long-term.csv` & `co2_annmean_mlo.txt` | `co2` | Combines 10,000-year Antarctic EPICA/Law Dome ice core records (-10,000 BCE to modern) with continuous in-situ NOAA Mauna Loa ppm measurements. |
-| `load_wildfires.py` | `input/Fires/canada-wildfires.csv` | `wildfires` | Normalizes 27 years of Canadian CFS/CWFIS wildfire totals, converting hectares to million acres and calculating decadal rates and megafire shifts. |
-| `drought-plott.py` | `input/Drought/pdsi-regional-divs.txt` | `drought_pdsi` | Ingests 76 years of monthly Palmer Drought Severity Index (PDSI) comparing the arid American West (Region 109: CA/NV) and humid Northeast (Region 101), precomputing 24-month rolling means. |
-| `load_flooding.py` | `input/Flooding/global-and-US-flooding.txt` & `US_flooding-cost` | `flood_trends`, `flood_costs` | Ingests NOAA CO-OPS high-tide flood days, EPA 1-day extreme rain land area %, EM-DAT international disaster frequency, and NOAA NCEI CPI-adjusted billion-dollar disaster losses. |
-| `load_sources.py` | Hardcoded scientific metadata catalogue | `sources` | Populates provenance records, institutional publisher details, citation links, update frequencies, and schema definitions. |
+| `python/load_temps.py` | `input/NOAA world temps/aravg.mon...asc` | `temps` | Parses 177 years (1850–2026) of NOAA annual land-ocean temperature anomalies and 95% uncertainty ranges (`lower_bound`, `upper_bound`). |
+| `python/load_co2.py` | `input/CO2/co2-concentration-long-term.csv` & `co2_annmean_mlo.txt` | `co2` | Combines 10,000-year Antarctic EPICA/Law Dome ice core records (-10,000 BCE to modern) with continuous in-situ NOAA Mauna Loa ppm measurements. |
+| `python/load_wildfires.py` | `input/Fires/canada-wildfires.csv` | `wildfires` | Normalizes 27 years of Canadian CFS/CWFIS wildfire totals, converting hectares to million acres and calculating decadal rates and megafire shifts. |
+| `python/drought-plott.py` | `input/Drought/pdsi-regional-divs.txt` | `drought_pdsi` | Ingests 76 years of monthly Palmer Drought Severity Index (PDSI) comparing the arid American West (Region 109: CA/NV) and humid Northeast (Region 101), precomputing 24-month rolling means. |
+| `python/load_flooding.py` | `input/Flooding/global-and-US-flooding.txt` & `US_flooding-cost` | `flood_trends`, `flood_costs` | Ingests NOAA CO-OPS high-tide flood days, EPA 1-day extreme rain land area %, EM-DAT international disaster frequency, and NOAA NCEI CPI-adjusted billion-dollar disaster losses. |
+| `python/load_sources.py` | Hardcoded scientific metadata catalogue | `sources` | Populates provenance records, institutional publisher details, citation links, update frequencies, and schema definitions. |
 
 ---
 
@@ -219,12 +219,12 @@ sequenceDiagram
 | `start.sh` | Bash | Starts the SurrealDB daemon with persistent storage. |
 | `stop_app.sh` | Bash | Stops the Axum backend and SurrealDB processes. |
 | `status.sh` | Bash | Reports process health, PIDs, and active port bindings. |
-| `load_temps.py` | Python | Ingests NOAA temperature anomaly time series into SurrealDB. |
-| `load_co2.py` | Python | Ingests 10,000-year ice core and Mauna Loa CO2 concentrations. |
-| `load_wildfires.py` | Python | Ingests Canadian wildfire counts and burned acreage. |
-| `drought-plott.py` | Python | Ingests NOAA PDSI monthly regional drought series and computes 24m means. |
-| `load_flooding.py` | Python | Ingests coastal high-tide flood days, rain areas, and billion-dollar damage costs. |
-| `load_sources.py` | Python | Ingests citations, methodology notes, and data source catalog. |
+| `python/load_temps.py` | Python | Ingests NOAA temperature anomaly time series into SurrealDB. |
+| `python/load_co2.py` | Python | Ingests 10,000-year ice core and Mauna Loa CO2 concentrations. |
+| `python/load_wildfires.py` | Python | Ingests Canadian wildfire counts and burned acreage. |
+| `python/drought-plott.py` | Python | Ingests NOAA PDSI monthly regional drought series and computes 24m means. |
+| `python/load_flooding.py` | Python | Ingests coastal high-tide flood days, rain areas, and billion-dollar damage costs. |
+| `python/load_sources.py` | Python | Ingests citations, methodology notes, and data source catalog. |
 | `backend/Cargo.toml` | TOML | Cargo manifest defining Rust dependencies (Axum, Tokio, Tower-HTTP, Reqwest, Serde). |
 | `backend/src/main.rs` | Rust | REST API gateway, SurrealQL database bridge, and static asset file server. |
 | `frontend/package.json` | JSON | Frontend manifest defining React 18, Vite, Chart.js, and Lucide icons. |

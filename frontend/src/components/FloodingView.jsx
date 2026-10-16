@@ -1,3 +1,5 @@
+import useDataset from '../hooks/useDataset';
+import { DatasetStatus } from './DatasetView';
 import AreaDataStatus from './AreaDataStatus';
 import React, { useState, useMemo } from 'react';
 import {
@@ -50,104 +52,9 @@ ChartJS.register(
   Filler
 );
 
-// Fallback datasets directly matching input/Flooding/global-and-US-flooding.txt
-const FLOOD_TRENDS_FALLBACK = [
-  { year: 1950, us_coastal_flood_days: 0.5, us_heavy_precip_area_pct: 8.2, global_reported_flood_events: 15 },
-  { year: 1960, us_coastal_flood_days: 0.8, us_heavy_precip_area_pct: 8.5, global_reported_flood_events: 25 },
-  { year: 1970, us_coastal_flood_days: 1.2, us_heavy_precip_area_pct: 8.8, global_reported_flood_events: 45 },
-  { year: 1980, us_coastal_flood_days: 1.8, us_heavy_precip_area_pct: 9.4, global_reported_flood_events: 75 },
-  { year: 1990, us_coastal_flood_days: 2.3, us_heavy_precip_area_pct: 10.5, global_reported_flood_events: 120 },
-  { year: 2000, us_coastal_flood_days: 2.8, us_heavy_precip_area_pct: 11.2, global_reported_flood_events: 155 },
-  { year: 2010, us_coastal_flood_days: 4.0, us_heavy_precip_area_pct: 11.8, global_reported_flood_events: 165 },
-  { year: 2020, us_coastal_flood_days: 5.0, us_heavy_precip_area_pct: 12.5, global_reported_flood_events: 175 },
-];
-
-// Fallback datasets directly matching input/Flooding/US-flooding-cost
-const FLOOD_COSTS_FALLBACK = [
-  { decade: '1980–1989', coastal_tropical_cyclones_billions: 46.5, inland_flooding_billions: 16.2, total_flood_related_billions: 62.7 },
-  { decade: '1990–1999', coastal_tropical_cyclones_billions: 125.8, inland_flooding_billions: 62.4, total_flood_related_billions: 188.2 },
-  { decade: '2000–2009', coastal_tropical_cyclones_billions: 436.0, inland_flooding_billions: 23.5, total_flood_related_billions: 459.5 },
-  { decade: '2010–2019', coastal_tropical_cyclones_billions: 536.3, inland_flooding_billions: 75.8, total_flood_related_billions: 612.1 },
-  { decade: '2020–2024 (5 yrs)', coastal_tropical_cyclones_billions: 398.6, inland_flooding_billions: 25.1, total_flood_related_billions: 423.7 },
-];
-
 // Historical North American and Global Flood Disasters & Milestones
-const FLOOD_MILESTONES = [
-  {
-    year: 1950,
-    title: 'Mid-20th Century Baseline: 0.5 High-Tide Flood Days/Yr',
-    region: 'United States & Global',
-    type: 'baseline',
-    tag: 'Baseline Era',
-    description: 'Sunny-day high tide coastal flooding was rare (< 1 day per year national median). EM-DAT recorded approximately 15 major flood disasters globally per year.',
-  },
-  {
-    year: 1983,
-    title: '1982–1983 Super El Niño Pacific Coastal Surges',
-    region: 'California & West Coast',
-    type: 'storm',
-    tag: 'El Niño Surge',
-    description: 'Unprecedented atmospheric rivers dumped record precipitation while high astronomical tides battered the Pacific coastline, prompting nationwide coastal levee and revetment overhauls.',
-  },
-  {
-    year: 1993,
-    title: 'The Great Midwest Flood of 1993 (~$44B)',
-    region: 'Upper Mississippi & Missouri Basins',
-    type: 'inland',
-    tag: 'All-Time Inland Flood',
-    description: 'Persistent downpours inundated 9 Midwestern states for months. Hundreds of levees failed, submerging 20 million acres and driving 1990s inland flood losses to $62.4B.',
-  },
-  {
-    year: 2005,
-    title: 'Hurricane Katrina Storm Surge Catastrophe ($200B+)',
-    region: 'Gulf Coast / New Orleans, LA',
-    type: 'surge',
-    tag: 'Deadliest Modern Surge',
-    description: 'A 28-foot storm surge overwhelmed federal levee defenses, submerging 80% of New Orleans and propelling 2000s tropical cyclone losses to an unprecedented $436.0B.',
-  },
-  {
-    year: 2012,
-    title: 'Superstorm Sandy Record Metro Surge ($90B+)',
-    region: 'New York & New Jersey Coastline',
-    type: 'surge',
-    tag: 'Historic Metro Surge',
-    description: 'A 14-foot storm surge hit at astronomical high tide, inundating Manhattan subway tunnels and coastal communities, laying bare the risk of baseline sea level rise.',
-  },
-  {
-    year: 2017,
-    title: 'Hurricane Harvey 60-Inch Cloudburst ($160B+)',
-    region: 'Houston & Southeast Texas',
-    type: 'deluge',
-    tag: 'Extreme Deluge',
-    description: 'Stalled tropical system dropped over 60 inches of rain across Greater Houston, an extreme downpour volume directly turbocharged by atmospheric warming (+7% water vapor capacity per 1°C).',
-  },
-  {
-    year: 2021,
-    title: 'Hurricane Ida Compound Surge & Flash Flood ($85B+)',
-    region: 'Louisiana to Northeast Corridors',
-    type: 'compound',
-    tag: 'Compound Event',
-    description: 'Category 4 storm surged through Louisiana before remnant cloudbursts dumped 3.15 inches of rain in a single hour in NYC, inundating subways and urban highway networks.',
-  },
-  {
-    year: 2024,
-    title: 'Hurricane Helene Southern Appalachian Inundation ($50B+)',
-    region: 'Western North Carolina & Southeast',
-    type: 'inland',
-    tag: 'Mountain Flash Flood',
-    description: 'Atmospheric moisture combined with mountainous terrain to drop 30+ inches of rain into river valleys, causing catastrophic flash flooding hundreds of miles inland.',
-  },
-  {
-    year: 2024,
-    title: 'Sunny-Day Nuisance Flooding Reaches 5.0 Days/Year',
-    region: 'U.S. East & Gulf Coasts',
-    type: 'sea-level',
-    tag: 'Chronic Sea-Level Rise',
-    description: 'NOAA confirms national median high-tide flood frequency reached 5.0 days/year (a 10-fold surge since 1950). Southeast Atlantic and Gulf cities experience 400% to 1,100% increases since 2000 with no storm present.',
-  },
-];
 
-export default function FloodingView({
+function FloodingContent({
   data = null,
   loading = false,
   error = null,
@@ -155,9 +62,11 @@ export default function FloodingView({
   sources = [],
   onRefresh,
 }) {
-  // Extract data from props or fallback
-  const trendsData = (data && data.trends && data.trends.length > 0) ? data.trends : FLOOD_TRENDS_FALLBACK;
-  const costsData = (data && data.costs && data.costs.length > 0) ? data.costs : FLOOD_COSTS_FALLBACK;
+  const milestoneState = useDataset('flood_milestones');
+  const FLOOD_MILESTONES = useMemo(() => [...milestoneState.data].sort((a, b) => a.year - b.year), [milestoneState.data]);
+
+  const trendsData = data.trends;
+  const costsData = data.costs;
 
   // View Mode Controls
   const [activeTab, setActiveTab] = useState('chart'); // 'chart' | 'milestones' | 'table' | 'economic'
@@ -558,6 +467,7 @@ export default function FloodingView({
 
   return (
     <div className="view-container">
+      <DatasetStatus {...milestoneState} empty={!milestoneState.data.length} />
       {/* Dataset status appears in the shared header. */}
       <AreaDataStatus>
         <span className="badge-ready">
@@ -580,17 +490,13 @@ export default function FloodingView({
           </div>
           <div className="wildfires-hero-text">
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '8px' }}>
-              <span className="placeholder-category-pill" style={{ color: '#0EA5E9', borderColor: 'rgba(14, 165, 233, 0.4)' }}>
+              <span className="placeholder-category-pill area-hero-category" style={{ color: '#0EA5E9', borderColor: 'rgba(14, 165, 233, 0.4)' }}>
                 Hydrological Extremes & Sea Level
               </span>
               <span className="badge-kpi-asof" style={{ padding: '3px 9px', borderRadius: '4px', fontSize: '0.74rem' }}>
                 1950–2024 Historical Record
               </span>
-              <span className="badge-kpi-asof" style={{ padding: '3px 9px', borderRadius: '4px', fontSize: '0.74rem', color: '#10B981', borderColor: 'rgba(16, 185, 129, 0.3)' }}>
-                SurrealDB 3.3 Engine
-              </span>
             </div>
-            <h2 className="wildfires-hero-title">Increased Flooding & Sea Level Rise</h2>
             <p className="wildfires-hero-desc">
               Escalating coastal high-tide sunny day flooding, expanding extreme downpour land areas, global disaster frequency surges, and over <strong>$1.74 Trillion</strong> in cumulative U.S. billion-dollar flood disaster damages. Sourced from <strong>NOAA NCEI Billion-Dollar Disasters</strong>, <strong>NOAA CO-OPS</strong>, <strong>EPA Heavy Precipitation Indicators</strong>, and the <strong>EM-DAT International Disaster Database</strong>.
             </p>
@@ -1305,4 +1211,12 @@ export default function FloodingView({
       )}
     </div>
   );
+}
+
+
+export default function FloodingView(props) {
+  if (props.loading || props.error || !props.data?.trends?.length || !props.data?.costs?.length) {
+    return <DatasetStatus loading={props.loading} error={props.error} empty />;
+  }
+  return <FloodingContent {...props} />;
 }

@@ -6,6 +6,7 @@ Downloads NOAA NCEI regional drought data, stores records into SurrealDB tables
 """
 
 import os
+from pathlib import Path
 import sys
 import base64
 import json
@@ -15,7 +16,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Directories
-PROJECT_DIR = "/home/timu/surapp"
+PROJECT_DIR = str(Path(__file__).resolve().parents[1])
 ARTIFACT_DIR = "/home/timu/.gemini/antigravity-ide/brain/7f497c18-9e4b-4784-9223-46d7d17062aa"
 CACHE_DIR = os.path.join(PROJECT_DIR, "input", "Drought")
 os.makedirs(CACHE_DIR, exist_ok=True)

@@ -1,5 +1,6 @@
 import React from 'react';
-import { ArrowLeft, Globe, RefreshCw, Thermometer, Database, Flame, Waves } from 'lucide-react';
+import Breadcrumbs from './Breadcrumbs';
+import { Globe, Car, Trees, RefreshCw, Thermometer, Database, Flame, Waves } from 'lucide-react';
 
 export default function Header({
   activeView,
@@ -18,30 +19,16 @@ export default function Header({
   return (
     <header className="header">
       <div className="header-left-cluster">
-        {isSources && (
-          <button
-            className="btn-header-back"
-            onClick={() => onNavigate('menu')}
-            title="Return to Main Menu"
-          >
-            <ArrowLeft size={16} />
-            <span>Main Menu</span>
-          </button>
-        )}
-
-        <div
-          className="brand"
-          onClick={() => onNavigate('menu')}
-          role="button"
-          tabIndex={0}
-          title="Click to go to Main Menu"
-          style={{ cursor: 'pointer' }}
-        >
+        <div className="brand">
           <div className="brand-icon">
             {isMenu ? (
               <Globe className="icon-globe" size={22} />
             ) : isSources ? (
               <Database className="icon-globe" size={22} />
+            ) : activeTopic?.iconName === 'Trees' ? (
+              <Trees style={{ color: '#22C55E' }} size={22} />
+            ) : activeTopic?.iconName === 'Car' ? (
+              <Car className="text-sky" size={22} />
             ) : isFlame ? (
               <Flame className="icon-fire text-red" size={22} />
             ) : isWaves ? (
@@ -65,37 +52,8 @@ export default function Header({
                 <p className="subtitle">
                   SurrealDB 3.3 • Axum 0.7 • Multi-Sector Climate Tracking
                 </p>
-              ) : isSources ? (
-                <div className="breadcrumb-bar">
-                  <span className="crumb-link" onClick={(e) => { e.stopPropagation(); onNavigate('menu'); }}>
-                    Main Menu
-                  </span>
-                  <span className="crumb-sep">/</span>
-                  <span className="crumb-current">Data Sources Catalog</span>
-                  <span className="crumb-badge-live">● Live Registry</span>
-                </div>
               ) : (
-                <div className="breadcrumb-bar">
-                  <button
-                    type="button"
-                    className="crumb-link crumb-back"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onNavigate('menu');
-                    }}
-                  >
-                    <ArrowLeft size={14} aria-hidden="true" />
-                    Main
-                  </button>
-                  <span className="crumb-sep">/</span>
-                  <span className="crumb-current">{activeTopic?.shortTitle || activeTopic?.title}</span>
-                  {activeTopic?.status === 'active' && (
-                    <span className="crumb-badge-live">● Live Dataset</span>
-                  )}
-                  {activeTopic?.status === 'blank' && (
-                    <span className="crumb-badge-blank">○ In Development</span>
-                  )}
-                </div>
+                <Breadcrumbs activeView={activeView} onNavigate={onNavigate} />
               )}
             </div>
           </div>
@@ -123,22 +81,24 @@ export default function Header({
         )}
 
         {/* Data Sources Catalog Button */}
-        <button
-          className={`btn ${isSources ? 'btn-primary' : 'btn-secondary'} btn-sm`}
-          onClick={() => onNavigate('sources')}
-          title="Inspect Registered Data Sources & Provenance"
-        >
-          <Database size={14} />
-          <span>Data Sources</span>
-        </button>
+        {!isSources && (
+          <button
+            className="btn btn-secondary btn-sm"
+            onClick={() => onNavigate('sources')}
+            title="Inspect Registered Data Sources & Provenance"
+          >
+            <Database size={14} />
+            <span>Data Sources</span>
+          </button>
+        )}
 
-        <div className="header-data-status">
+        {(isMenu || isSources) && (
           <div className="badge-live">
             <span className="pulse-dot"></span>
             SurrealDB Connected
           </div>
-          <div id="area-data-status" />
-        </div>
+        )}
+        <div id="area-data-status" />
 
         <button className="btn btn-secondary btn-sm" onClick={onRefresh} title="Refresh climate data">
           <RefreshCw size={14} className={loading ? 'spin' : ''} />

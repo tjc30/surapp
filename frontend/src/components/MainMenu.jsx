@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import {
+  Car,
   Thermometer,
   Activity,
   Waves,
@@ -17,6 +18,7 @@ import {
 } from 'lucide-react';
 
 const ICON_MAP = {
+  Car,
   Thermometer,
   Activity,
   Waves,

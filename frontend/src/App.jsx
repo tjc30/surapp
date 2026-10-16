@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
+import ReforestationView from './components/ReforestationView';
+import ElectricTransportationView from './components/ElectricTransportationView';
 import MainMenu from './components/MainMenu';
 import TemperatureRiseView from './components/TemperatureRiseView';
 import TopicPlaceholderView from './components/TopicPlaceholderView';
@@ -39,6 +41,7 @@ export default function App() {
 
   // Fetch all endpoints including /api/sources and /api/drought
   const fetchData = async () => {
+    window.dispatchEvent(new Event('refresh-datasets'));
     setLoading(true);
     setError(null);
     try {
@@ -208,6 +211,10 @@ export default function App() {
           />
         )}
 
+        {activeView === 'reforestation' && <ReforestationView />}
+
+        {activeView === 'electric-transportation' && <ElectricTransportationView onNavigate={handleNavigate} />}
+
         {activeView === 'green-energy' && <GreenEnergyView onNavigate={handleNavigate} />}
 
         {activeView === 'sources' && (
@@ -226,6 +233,8 @@ export default function App() {
           activeView !== 'extreme-weather' &&
           activeView !== 'droughts' &&
           activeView !== 'flooding' &&
+          activeView !== 'reforestation' &&
+          activeView !== 'electric-transportation' &&
           activeView !== 'green-energy' &&
           activeView !== 'sources' && (
             <TopicPlaceholderView

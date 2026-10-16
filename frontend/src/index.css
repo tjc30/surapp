@@ -121,6 +121,7 @@ body {
 
 .breadcrumb-bar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 8px;
   font-size: 0.78rem;
@@ -128,6 +129,7 @@ body {
 }
 
 .crumb-link {
+  text-decoration: none;
   color: var(--text-secondary);
   cursor: pointer;
   transition: color 0.15s ease;
@@ -1470,50 +1472,25 @@ body {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 14px;
-  padding: 22px;
+  padding: 12px 22px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
-}
-
-.sources-hero-top {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.sources-hero-icon {
-  width: 50px;
-  height: 50px;
-  border-radius: 12px;
-  background: rgba(56, 189, 248, 0.15);
-  border: 1px solid rgba(56, 189, 248, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--accent-blue);
-  flex-shrink: 0;
-}
-
-.sources-hero-title {
-  font-size: 1.45rem;
-  font-weight: 800;
-  color: #FFFFFF;
-  letter-spacing: -0.02em;
+  gap: 8px;
 }
 
 .sources-hero-desc {
-  font-size: 0.85rem;
+  width: 100%;
+  font-size: 1rem;
   color: var(--text-secondary);
   line-height: 1.5;
-  margin-top: 4px;
+  margin: 0;
 }
 
 .sources-stats-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 14px;
-  padding-top: 14px;
+  padding-top: 8px;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
@@ -1521,7 +1498,7 @@ body {
   background: var(--bg-card-subtle);
   border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: 10px;
-  padding: 12px 16px;
+  padding: 8px 16px;
   display: flex;
   flex-direction: column;
   gap: 3px;
@@ -1536,7 +1513,7 @@ body {
 }
 
 .stat-box-val {
-  font-size: 1.25rem;
+  font-size: 0.7rem;
   font-weight: 800;
   font-family: var(--font-mono);
 }
@@ -1548,6 +1525,14 @@ body {
 
 .sources-table th {
   white-space: nowrap;
+}
+
+.sources-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--bg-card-subtle);
+  box-shadow: 0 1px 0 var(--border-color);
 }
 
 .table-pill-wrap {
@@ -1794,6 +1779,11 @@ body {
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+/* The parent gap provides equal spacing above and below the summary cards. */
+.co2-view-container > .kpi-grid {
+  margin-bottom: 0;
 }
 
 .co2-hero-banner {
@@ -3232,12 +3222,14 @@ body {
 }
 
 
-/* Area data status sits directly below the connection status. */
-.header-data-status {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 6px;
+/* Keep the area data status on the same line as Data Sources and Sync. */
+.header-actions > * {
+  flex-shrink: 0;
+}
+
+.header-actions {
+  flex-wrap: nowrap;
+  white-space: nowrap;
 }
 
 #area-data-status:empty {
@@ -3249,8 +3241,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  white-space: normal;
-  text-align: right;
+  white-space: nowrap;
 }
 
 
@@ -3262,4 +3253,93 @@ body {
   border: 0;
   background: transparent;
   font: inherit;
+}
+
+/* The category introduces each area without repeating the shared page title. */
+.area-hero-category {
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.co2-trajectory-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.co2-trajectory-title > svg {
+  flex-shrink: 0;
+}
+
+/* Let catalog filters fill the same row as the search field before wrapping. */
+.sources-controls-strip {
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.sources-controls-strip > .search-box {
+  flex: 0 1 320px;
+  min-width: min(320px, 100%);
+  max-width: 100%;
+}
+
+.sources-controls-strip > .category-filter-group {
+  display: contents;
+}
+
+/* Electric transportation research area. */
+.transport-view { display: flex; flex-direction: column; gap: 20px; }
+.transport-intro, .transport-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 20px;
+}
+.transport-intro p, .transport-card p { line-height: 1.6; }
+.transport-note { color: var(--text-secondary); font-size: 0.82rem; margin-top: 10px; }
+.transport-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 16px; }
+.transport-card { display: flex; flex-direction: column; gap: 10px; }
+.transport-card h2 { display: flex; align-items: center; gap: 10px; font-size: 1.05rem; }
+.transport-card h2 svg, .transport-metric { color: var(--accent-blue); }
+.transport-period { color: var(--text-secondary); font-size: 0.75rem; }
+.transport-metric { font-size: 1.65rem; font-weight: 800; }
+.transport-measure { font-size: 0.85rem; font-weight: 700; }
+.transport-card a, .transport-table a { color: var(--accent-blue); font-size: 0.8rem; }
+.transport-card a { margin-top: auto; padding-top: 12px; }
+.transport-table-scroll { overflow: auto; }
+.transport-table { min-width: 850px; }
+.transport-table thead th { position: sticky; top: 0; z-index: 1; }
+
+/* Reforestation: one matched tree-cover balance chart. */
+.forest-view { display: flex; flex-direction: column; gap: 20px; }
+.forest-intro, .forest-analysis { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; }
+.forest-intro .area-hero-category { display: inline-flex; align-items: center; gap: 8px; }
+.forest-intro p { line-height: 1.6; color: var(--text-secondary); }
+.forest-analysis-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+.forest-chart { height: 420px; }
+.forest-source-links { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 14px; }
+.forest-source-links a { color: var(--accent-blue); font-size: 0.8rem; }
+
+.manual-source-explanation {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 10px 0;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+.manual-source-labels {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+/* Keep the catalog reset filter easy to find when another filter is selected. */
+.catalog-all-sources:not(.active) {
+  border-color: #38BDF8;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.2);
 }

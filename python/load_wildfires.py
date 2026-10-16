@@ -5,6 +5,7 @@ Leaves out hectares per specification; stores fire count and area burned in mill
 """
 
 import argparse
+from pathlib import Path
 import base64
 import csv
 import json
@@ -13,10 +14,9 @@ import sys
 import urllib.error
 import urllib.request
 
+ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CSV_PATHS = [
-    '/home/timu/surapp/input/Fires/Forest fires in Canada 2000-2026 v2.csv',
-    './input/Fires/Forest fires in Canada 2000-2026 v2.csv',
-    '../input/Fires/Forest fires in Canada 2000-2026 v2.csv',
+    str(ROOT / 'input/Fires/Forest fires in Canada 2000-2026 v2.csv'),
 ]
 
 def find_default_csv():

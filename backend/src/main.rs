@@ -1,5 +1,5 @@
 use axum::{
-    extract::{Query, Request},
+    extract::{Path as ApiPath, Query, Request},
     http::StatusCode,
     middleware::{self, Next},
     response::{IntoResponse, Response},
@@ -105,6 +105,10 @@ pub struct DataSourceRecord {
     pub frequency: String,
     pub notes: String,
     pub status: String,
+    #[serde(default)]
+    pub manually_maintained: Option<bool>,
+    #[serde(default)]
+    pub manually_reviewed: Option<bool>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -645,7 +649,7 @@ async fn get_stats() -> Result<Json<StatsSummary>, (StatusCode, String)> {
 
 async fn get_sources() -> Result<Json<Vec<DataSourceRecord>>, (StatusCode, String)> {
     let client = reqwest::Client::new();
-    let query = "SELECT table_name, topic_id, display_name, data_type, source_org, source_url, api_endpoint, last_updated, next_update, record_count, time_range, unit, frequency, notes, status FROM data_sources ORDER BY table_name ASC;".to_string();
+    let query = "SELECT table_name, topic_id, display_name, data_type, source_org, source_url, api_endpoint, last_updated, next_update, record_count, time_range, unit, frequency, notes, status, manually_maintained, manually_reviewed FROM data_sources ORDER BY table_name ASC;".to_string();
 
     let response = client
         .post(SURREAL_URL)
@@ -675,6 +679,45 @@ async fn get_sources() -> Result<Json<Vec<DataSourceRecord>>, (StatusCode, Strin
         .unwrap_or_default();
 
     Ok(Json(records))
+}
+
+// All names are fixed here; user input is never interpolated into SurrealQL.
+async fn get_area_dataset(ApiPath(dataset): ApiPath<String>) -> Result<Json<Vec<serde_json::Value>>, (StatusCode, String)> {
+    let table = match dataset.as_str() {
+        "global_clean_power_share" => "global_clean_power_share",
+        "tree_cover_change_2000_2020" => "tree_cover_change_2000_2020",
+        "electric_transport_cars" => "electric_transport_cars",
+        "electric_transport_road" => "electric_transport_road",
+        "electric_transport_rail" => "electric_transport_rail",
+        "electric_transport_marine" => "electric_transport_marine",
+        "electric-transportation" => "electric_transport_cars, electric_transport_road, electric_transport_rail, electric_transport_marine",
+        "co2_milestones" => "co2_milestones",
+        "drought_milestones" => "drought_milestones",
+        "wildfire_milestones" => "wildfire_milestones",
+        "flood_milestones" => "flood_milestones",
+        _ => return Err((StatusCode::NOT_FOUND, "Unknown dataset".into())),
+    };
+    let response = reqwest::Client::new()
+        .post(SURREAL_URL)
+        .header("Accept", "application/json")
+        .header("surreal-ns", SURREAL_NS)
+        .header("surreal-db", SURREAL_DB)
+        .basic_auth(SURREAL_USER, Some(SURREAL_PASS))
+        .body(format!("SELECT VALUE data FROM {};", table))
+        .send().await
+        .map_err(|e| (StatusCode::BAD_GATEWAY, format!("Database unavailable: {}", e)))?;
+    if !response.status().is_success() {
+        return Err((StatusCode::BAD_GATEWAY, "Database request failed".into()));
+    }
+    let results: Vec<serde_json::Value> = response.json().await
+        .map_err(|e| (StatusCode::BAD_GATEWAY, format!("Invalid database response: {}", e)))?;
+    let result = results.first().ok_or((StatusCode::BAD_GATEWAY, "Missing database result".into()))?;
+    if result["status"] != "OK" {
+        return Err((StatusCode::BAD_GATEWAY, "Dataset query failed".into()));
+    }
+    let rows = result["result"].as_array().cloned()
+        .ok_or((StatusCode::BAD_GATEWAY, "Invalid dataset records".into()))?;
+    Ok(Json(rows))
 }
 
 async fn health_check() -> impl IntoResponse {
@@ -720,7 +763,8 @@ async fn main() {
         .route("/api/drought", get(get_drought))
         .route("/api/flooding", get(get_flooding))
         .route("/api/stats", get(get_stats))
-        .route("/api/sources", get(get_sources));
+        .route("/api/sources", get(get_sources))
+        .route("/api/datasets/:dataset", get(get_area_dataset));
 
     let dist_path = Path::new("../frontend/dist");
     if dist_path.exists() {

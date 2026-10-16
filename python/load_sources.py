@@ -7,6 +7,7 @@ Automated data pipeline script for Climate Observatory:
 """
 
 import csv
+from pathlib import Path
 import io
 import json
 import base64
@@ -112,7 +113,7 @@ for row in reader:
 print(f"Total parsed OWID CO2 records: {len(co2_records)}")
 
 print("2. Parsing NOAA CO2 mean dataset...")
-noaa_csv_path = '/home/timu/surapp/input/CO2/NOAA CO2 mean 1959-2025.csv'
+noaa_csv_path = Path(__file__).resolve().parents[1] / 'input/CO2/NOAA CO2 mean 1959-2025.csv'
 noaa_records = []
 if os.path.exists(noaa_csv_path):
     with open(noaa_csv_path, 'r', encoding='utf-8') as f:

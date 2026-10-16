@@ -1,0 +1,855 @@
+{
+  "tables": [
+    {
+      "name": "global_clean_power_share",
+      "records": [
+        {
+          "year": 2000,
+          "country": "World",
+          "renewables_share_elec": 18.716,
+          "low_carbon_share_elec": 35.344,
+          "solar_share_elec": 0.007,
+          "wind_share_elec": 0.204
+        },
+        {
+          "year": 2001,
+          "country": "World",
+          "renewables_share_elec": 18.044,
+          "low_carbon_share_elec": 34.902,
+          "solar_share_elec": 0.009,
+          "wind_share_elec": 0.246
+        },
+        {
+          "year": 2002,
+          "country": "World",
+          "renewables_share_elec": 17.908,
+          "low_carbon_share_elec": 34.448,
+          "solar_share_elec": 0.011,
+          "wind_share_elec": 0.325
+        },
+        {
+          "year": 2003,
+          "country": "World",
+          "renewables_share_elec": 17.442,
+          "low_carbon_share_elec": 33.085,
+          "solar_share_elec": 0.013,
+          "wind_share_elec": 0.38
+        },
+        {
+          "year": 2004,
+          "country": "World",
+          "renewables_share_elec": 17.982,
+          "low_carbon_share_elec": 33.597,
+          "solar_share_elec": 0.016,
+          "wind_share_elec": 0.491
+        },
+        {
+          "year": 2005,
+          "country": "World",
+          "renewables_share_elec": 18.096,
+          "low_carbon_share_elec": 33.133,
+          "solar_share_elec": 0.022,
+          "wind_share_elec": 0.576
+        },
+        {
+          "year": 2006,
+          "country": "World",
+          "renewables_share_elec": 18.228,
+          "low_carbon_share_elec": 32.887,
+          "solar_share_elec": 0.029,
+          "wind_share_elec": 0.707
+        },
+        {
+          "year": 2007,
+          "country": "World",
+          "renewables_share_elec": 17.974,
+          "low_carbon_share_elec": 31.687,
+          "solar_share_elec": 0.037,
+          "wind_share_elec": 0.868
+        },
+        {
+          "year": 2008,
+          "country": "World",
+          "renewables_share_elec": 18.908,
+          "low_carbon_share_elec": 32.313,
+          "solar_share_elec": 0.059,
+          "wind_share_elec": 1.099
+        },
+        {
+          "year": 2009,
+          "country": "World",
+          "renewables_share_elec": 19.467,
+          "low_carbon_share_elec": 32.789,
+          "solar_share_elec": 0.099,
+          "wind_share_elec": 1.385
+        },
+        {
+          "year": 2010,
+          "country": "World",
+          "renewables_share_elec": 19.721,
+          "low_carbon_share_elec": 32.54,
+          "solar_share_elec": 0.151,
+          "wind_share_elec": 1.627
+        },
+        {
+          "year": 2011,
+          "country": "World",
+          "renewables_share_elec": 20.016,
+          "low_carbon_share_elec": 31.896,
+          "solar_share_elec": 0.289,
+          "wind_share_elec": 2.002
+        },
+        {
+          "year": 2012,
+          "country": "World",
+          "renewables_share_elec": 20.977,
+          "low_carbon_share_elec": 31.78,
+          "solar_share_elec": 0.43,
+          "wind_share_elec": 2.351
+        },
+        {
+          "year": 2013,
+          "country": "World",
+          "renewables_share_elec": 21.712,
+          "low_carbon_share_elec": 32.287,
+          "solar_share_elec": 0.569,
+          "wind_share_elec": 2.739
+        },
+        {
+          "year": 2014,
+          "country": "World",
+          "renewables_share_elec": 22.263,
+          "low_carbon_share_elec": 32.785,
+          "solar_share_elec": 0.833,
+          "wind_share_elec": 2.973
+        },
+        {
+          "year": 2015,
+          "country": "World",
+          "renewables_share_elec": 22.967,
+          "low_carbon_share_elec": 33.52,
+          "solar_share_elec": 1.067,
+          "wind_share_elec": 3.456
+        },
+        {
+          "year": 2016,
+          "country": "World",
+          "renewables_share_elec": 23.732,
+          "low_carbon_share_elec": 34.143,
+          "solar_share_elec": 1.326,
+          "wind_share_elec": 3.889
+        },
+        {
+          "year": 2017,
+          "country": "World",
+          "renewables_share_elec": 24.466,
+          "low_carbon_share_elec": 34.663,
+          "solar_share_elec": 1.748,
+          "wind_share_elec": 4.479
+        },
+        {
+          "year": 2018,
+          "country": "World",
+          "renewables_share_elec": 25.089,
+          "low_carbon_share_elec": 35.135,
+          "solar_share_elec": 2.173,
+          "wind_share_elec": 4.792
+        },
+        {
+          "year": 2019,
+          "country": "World",
+          "renewables_share_elec": 26.071,
+          "low_carbon_share_elec": 36.335,
+          "solar_share_elec": 2.601,
+          "wind_share_elec": 5.296
+        },
+        {
+          "year": 2020,
+          "country": "World",
+          "renewables_share_elec": 27.987,
+          "low_carbon_share_elec": 37.898,
+          "solar_share_elec": 3.193,
+          "wind_share_elec": 5.955
+        },
+        {
+          "year": 2021,
+          "country": "World",
+          "renewables_share_elec": 28.102,
+          "low_carbon_share_elec": 37.877,
+          "solar_share_elec": 3.73,
+          "wind_share_elec": 6.571
+        },
+        {
+          "year": 2022,
+          "country": "World",
+          "renewables_share_elec": 29.47,
+          "low_carbon_share_elec": 38.598,
+          "solar_share_elec": 4.61,
+          "wind_share_elec": 7.288
+        },
+        {
+          "year": 2023,
+          "country": "World",
+          "renewables_share_elec": 30.323,
+          "low_carbon_share_elec": 39.417,
+          "solar_share_elec": 5.61,
+          "wind_share_elec": 7.818
+        },
+        {
+          "year": 2024,
+          "country": "World",
+          "renewables_share_elec": 31.935,
+          "low_carbon_share_elec": 40.914,
+          "solar_share_elec": 6.927,
+          "wind_share_elec": 8.113
+        },
+        {
+          "year": 2025,
+          "country": "World",
+          "renewables_share_elec": 33.76,
+          "low_carbon_share_elec": 42.61,
+          "solar_share_elec": 8.745,
+          "wind_share_elec": 8.539
+        }
+      ]
+    },
+    {
+      "name": "tree_cover_change_2000_2020",
+      "records": [
+        {
+          "region": "World",
+          "gross_loss_mha": 231,
+          "gross_gain_mha": 131,
+          "net_change_mha": -101
+        },
+        {
+          "region": "Africa",
+          "gross_loss_mha": 45,
+          "gross_gain_mha": 12,
+          "net_change_mha": -32
+        },
+        {
+          "region": "Asia",
+          "gross_loss_mha": 62,
+          "gross_gain_mha": 47,
+          "net_change_mha": -15
+        },
+        {
+          "region": "Australia",
+          "gross_loss_mha": 3,
+          "gross_gain_mha": 2,
+          "net_change_mha": -1
+        },
+        {
+          "region": "Europe",
+          "gross_loss_mha": 15,
+          "gross_gain_mha": 21,
+          "net_change_mha": 6
+        },
+        {
+          "region": "North America",
+          "gross_loss_mha": 48,
+          "gross_gain_mha": 33,
+          "net_change_mha": -15
+        },
+        {
+          "region": "South America",
+          "gross_loss_mha": 58,
+          "gross_gain_mha": 14,
+          "net_change_mha": -44
+        }
+      ]
+    },
+    {
+      "name": "electric_transport_cars",
+      "records": [
+        {
+          "id": "cars",
+          "name": "Cars",
+          "icon": "Car",
+          "source": "cars",
+          "metric": "Over 20 million",
+          "measure": "Electric car sales",
+          "period": "2025 · World",
+          "summary": "Electric models accounted for one-quarter of new car sales worldwide in 2025.",
+          "scope": "New sales, not the share of cars already on the road. IEA electric-car figures include battery electric and plug-in hybrid vehicles.",
+          "reference": {
+            "name": "IEA · Global EV Outlook 2026: Executive summary",
+            "org": "International Energy Agency",
+            "url": "https://www.iea.org/reports/global-ev-outlook-2026/executive-summary",
+            "edition": "2026 report",
+            "coverage": "World · 2025",
+            "year": "2025"
+          }
+        }
+      ]
+    },
+    {
+      "name": "electric_transport_road",
+      "records": [
+        {
+          "id": "trucks",
+          "name": "Trucks",
+          "icon": "Truck",
+          "source": "road",
+          "metric": "9%",
+          "measure": "Electric share of new truck sales",
+          "period": "2025 · World",
+          "summary": "Electric truck sales exceeded 400,000; battery electric models made up 97% of electric truck sales.",
+          "scope": "Medium and heavy freight trucks. This is a sales share, not a fleet share.",
+          "reference": {
+            "name": "IEA · Global EV Outlook 2026: Other EV modes",
+            "org": "International Energy Agency",
+            "url": "https://www.iea.org/reports/global-ev-outlook-2026/trends-in-other-ev-modes",
+            "edition": "2026 report",
+            "coverage": "World · 2025",
+            "year": "2025"
+          }
+        },
+        {
+          "id": "buses",
+          "name": "Buses",
+          "icon": "Bus",
+          "source": "road",
+          "metric": "Almost 70,000",
+          "measure": "Electric bus sales",
+          "period": "2025 · World",
+          "summary": "Electric bus sales grew 12% in 2025. Battery electric models represented 98% of electric bus sales.",
+          "scope": "Buses with at least 10 seats, including urban and intercity services. Not a city-bus-only measure.",
+          "reference": {
+            "name": "IEA · Global EV Outlook 2026: Other EV modes",
+            "org": "International Energy Agency",
+            "url": "https://www.iea.org/reports/global-ev-outlook-2026/trends-in-other-ev-modes",
+            "edition": "2026 report",
+            "coverage": "World · 2025",
+            "year": "2025"
+          }
+        },
+        {
+          "id": "motorbikes",
+          "name": "Motor Bikes",
+          "icon": "Bike",
+          "source": "road",
+          "metric": "Around 14%",
+          "measure": "Electric share of new two-wheeler sales",
+          "period": "2025 · World",
+          "summary": "Almost 10 million electric two-wheelers were sold globally in 2025.",
+          "scope": "IEA two-wheelers include motorcycles and mopeds with a top speed of at least 25 km/h. Excludes electric-assisted bicycles and low-speed scooters; not a motorcycle-only measure.",
+          "reference": {
+            "name": "IEA · Global EV Outlook 2026: Other EV modes",
+            "org": "International Energy Agency",
+            "url": "https://www.iea.org/reports/global-ev-outlook-2026/trends-in-other-ev-modes",
+            "edition": "2026 report",
+            "coverage": "World · 2025",
+            "year": "2025"
+          }
+        }
+      ]
+    },
+    {
+      "name": "electric_transport_rail",
+      "records": [
+        {
+          "id": "trains",
+          "name": "Trains",
+          "icon": "TrainFront",
+          "source": "rail",
+          "metric": "About 75%",
+          "measure": "Passenger rail activity on electric trains",
+          "period": "2016 baseline · World",
+          "summary": "The IEA’s 2019 rail report describes roughly three-quarters of passenger rail activity as electric, using historical data through 2016.",
+          "scope": "Historical passenger transport activity, not the share of locomotives or track electrified. Includes externally supplied electricity; this is not a battery-train statistic.",
+          "reference": {
+            "name": "IEA · The Future of Rail",
+            "org": "International Energy Agency",
+            "url": "https://www.iea.org/reports/the-future-of-rail",
+            "edition": "2019 report",
+            "coverage": "World · historical activity through 2016",
+            "year": "2016"
+          }
+        }
+      ]
+    },
+    {
+      "name": "electric_transport_marine",
+      "records": [
+        {
+          "id": "boats",
+          "name": "Boats",
+          "icon": "Ship",
+          "source": "marine",
+          "metric": "Short-distance focus",
+          "measure": "Battery-electric and hybrid vessels",
+          "period": "EMSA guidance · reviewed Oct 2026",
+          "summary": "EMSA identifies ferries and short voyages as key battery applications. Battery energy density limits longer autonomous voyages.",
+          "scope": "Qualitative guidance, not a measured adoption rate. Pure electric, hybrid and plug-in hybrid vessels differ; shore power alone does not imply electric propulsion.",
+          "reference": {
+            "name": "EMSA · Ship electrification",
+            "org": "European Maritime Safety Agency",
+            "url": "https://emsa.europa.eu/electrification.html",
+            "edition": "Publication date not specified",
+            "coverage": "Maritime technology guidance · no global fleet series",
+            "year": "Not specified"
+          }
+        }
+      ]
+    },
+    {
+      "name": "co2_milestones",
+      "records": [
+        {
+          "year": -10000,
+          "title": "Start of the Holocene Epoch",
+          "co2": 248.9,
+          "description": "Retreat of continental ice sheets and emergence of early human agriculture and settlements.",
+          "tag": "Paleoclimate Baseline"
+        },
+        {
+          "year": -5000,
+          "title": "Mid-Holocene Climate Optimum",
+          "co2": 261.2,
+          "description": "Warm, stable global climate supporting early agricultural societies in Mesopotamia, the Nile, and Indus valleys.",
+          "tag": "Agricultural Expansion"
+        },
+        {
+          "year": -2500,
+          "title": "Egyptian Old Kingdom & Bronze Age",
+          "co2": 265.8,
+          "description": "Pyramids of Giza constructed; atmospheric CO2 remains strictly locked between 260 and 270 ppm.",
+          "tag": "Ancient Civilizations"
+        },
+        {
+          "year": 0,
+          "title": "Common Era / Roman Empire",
+          "co2": 276.4,
+          "description": "Peak Roman and Han Dynasty agricultural land use; stable atmospheric baseline continues.",
+          "tag": "Classical Era"
+        },
+        {
+          "year": 1750,
+          "title": "Onset of Industrial Revolution",
+          "co2": 277,
+          "description": "Invention of James Watt's steam engine; beginning of coal-powered mechanization in Britain.",
+          "tag": "Pre-Industrial Benchmark"
+        },
+        {
+          "year": 1850,
+          "title": "Official IPCC Benchmark (1850–1900)",
+          "co2": 285.2,
+          "description": "Global industrialization gathers pace. Pre-industrial atmospheric benchmark conventionally set at ~280 ppm.",
+          "tag": "Industrial Dawn"
+        },
+        {
+          "year": 1958,
+          "title": "Keeling Curve Initiated",
+          "co2": 315.3,
+          "description": "Dr. Charles David Keeling begins continuous in-situ atmospheric monitoring at NOAA Mauna Loa Observatory, Hawaii.",
+          "tag": "Instrumental Era"
+        },
+        {
+          "year": 2013,
+          "title": "Breaching 400 ppm Threshold",
+          "co2": 396.5,
+          "description": "Daily Mauna Loa CO2 readings permanently cross 400 ppm for the first time in over 3 million years (Pliocene epoch).",
+          "tag": "Critical Planetary Boundary"
+        },
+        {
+          "year": 2025,
+          "title": "Present Day Atmospheric Peak",
+          "co2": 427.35,
+          "description": "Global annual mean exceeds 426 ppm (427.35 ppm NOAA Mauna Loa), +52% above the 10,000-year Holocene baseline.",
+          "tag": "Modern Record Peak"
+        }
+      ]
+    },
+    {
+      "name": "drought_milestones",
+      "records": [
+        {
+          "year": 1950,
+          "title": "1950s Southwest & Southern Plains Aridity",
+          "region": "West / Southwest",
+          "pdsi": -2.4,
+          "type": "drought",
+          "tag": "Baseline Period",
+          "description": "Post-WWII prolonged dry spell affecting California, Nevada, and the Southwest with repeated seasonal deficits."
+        },
+        {
+          "year": 1965,
+          "title": "Historic Northeast Drought of the 1960s",
+          "region": "Northeast",
+          "pdsi": -4.5,
+          "type": "drought",
+          "tag": "All-Time East Record",
+          "description": "Severe multi-year drought across New England, New York, and the Mid-Atlantic. Reservoir levels fell to historic lows, triggering regional emergency rationing."
+        },
+        {
+          "year": 1977,
+          "title": "1976–1977 California Severe Drought Crisis",
+          "region": "West (CA/NV)",
+          "pdsi": -5.85,
+          "type": "drought",
+          "tag": "Historic Desiccation",
+          "description": "One of the sharpest 2-year precipitation deficits in modern West Coast history. Snowpacks virtually disappeared, sparking modern statewide water management reforms."
+        },
+        {
+          "year": 1983,
+          "title": "1982–1983 Super El Niño Moisture Surplus",
+          "region": "West (CA/NV)",
+          "pdsi": 4.88,
+          "type": "moist",
+          "tag": "Record Wet Spell",
+          "description": "Intense atmospheric rivers dumped unprecedented rain and snow across California and Nevada, producing the highest wet index anomaly (+4.88) in the 76-year record."
+        },
+        {
+          "year": 1991,
+          "title": "1987–1992 Six-Year Western Drought",
+          "region": "West (CA/NV)",
+          "pdsi": -3.8,
+          "type": "drought",
+          "tag": "Prolonged Deficit",
+          "description": "Six consecutive dry years in California depleted state reservoirs to 32% of capacity, accelerating groundwater overdraft across the Central Valley."
+        },
+        {
+          "year": 2014,
+          "title": "2012–2016 Exceptional California Megadrought",
+          "region": "West (CA/NV)",
+          "pdsi": -5.1,
+          "type": "drought",
+          "tag": "State Emergency",
+          "description": "Record-high temperatures exacerbated precipitation deficits, creating a \"hot drought.\" Governor Brown declared a statewide state of emergency with mandatory 25% urban reductions."
+        },
+        {
+          "year": 2021,
+          "title": "2020–2022 Western North America Megadrought Peak",
+          "region": "West (CA/NV)",
+          "pdsi": -4.85,
+          "type": "drought",
+          "tag": "1,200-Year Event",
+          "description": "Tree-ring studies confirmed 2000–2022 was the driest 22-year period in southwestern North America since at least 800 CE. Lake Mead and Lake Powell dropped to record crisis levels."
+        },
+        {
+          "year": 2025,
+          "title": "2024–2025 Trans-Continental Regional Divergence",
+          "region": "West & Northeast",
+          "pdsi": -3.22,
+          "type": "divergence",
+          "tag": "Current State",
+          "description": "While California experienced atmospheric river recovery in 2023, the Northeast plunged into an unexpected severe flash drought in late 2024–2025 (-3.22 PDSI)."
+        }
+      ]
+    },
+    {
+      "name": "wildfire_milestones",
+      "records": [
+        {
+          "year": 2006,
+          "title": "Peak Fire Frequency (9,719 Fires)",
+          "fires": 9719,
+          "acres": 5.19,
+          "description": "Highest total count of ignitions in the 21st century dataset, but moderate acreage burned.",
+          "tag": "Ignition Peak"
+        },
+        {
+          "year": 2014,
+          "title": "Northwest Territories Extreme Season",
+          "fires": 5016,
+          "acres": 11.23,
+          "description": "Massive boreal forest fires in the subarctic burning over 11 million acres.",
+          "tag": "Northern Season"
+        },
+        {
+          "year": 2016,
+          "title": "Fort McMurray Horse River Megafire",
+          "fires": 5259,
+          "acres": 3.26,
+          "description": "Destructive urban-wildland interface blaze forcing the evacuation of 88,000 residents in Alberta.",
+          "tag": "Community Impact"
+        },
+        {
+          "year": 2023,
+          "title": "Unprecedented Historic Record (43.51M Acres)",
+          "fires": 6837,
+          "acres": 43.51,
+          "description": "The most catastrophic wildfire season in modern Canadian history. More than double previous records; smoke blanketed eastern North America and crossed the Atlantic.",
+          "tag": "All-Time Record"
+        },
+        {
+          "year": 2025,
+          "title": "Second Most Severe Season (21.25M Acres)",
+          "fires": 6199,
+          "acres": 21.25,
+          "description": "Continued megafire conditions across British Columbia, Alberta, and the Northwest Territories.",
+          "tag": "Extreme Megafires"
+        },
+        {
+          "year": 2026,
+          "title": "2026 Season (As of Sept 2026)",
+          "fires": 5248,
+          "acres": 11.2,
+          "description": "Year-to-date data as of September 2026 indicates continued elevated fire activity (11.20 million acres burned across 5,248 fires).",
+          "tag": "Current Season YTD"
+        }
+      ]
+    },
+    {
+      "name": "flood_milestones",
+      "records": [
+        {
+          "year": 1950,
+          "title": "Mid-20th Century Baseline: 0.5 High-Tide Flood Days/Yr",
+          "region": "United States & Global",
+          "type": "baseline",
+          "tag": "Baseline Era",
+          "description": "Sunny-day high tide coastal flooding was rare (< 1 day per year national median). EM-DAT recorded approximately 15 major flood disasters globally per year."
+        },
+        {
+          "year": 1983,
+          "title": "1982–1983 Super El Niño Pacific Coastal Surges",
+          "region": "California & West Coast",
+          "type": "storm",
+          "tag": "El Niño Surge",
+          "description": "Unprecedented atmospheric rivers dumped record precipitation while high astronomical tides battered the Pacific coastline, prompting nationwide coastal levee and revetment overhauls."
+        },
+        {
+          "year": 1993,
+          "title": "The Great Midwest Flood of 1993 (~$44B)",
+          "region": "Upper Mississippi & Missouri Basins",
+          "type": "inland",
+          "tag": "All-Time Inland Flood",
+          "description": "Persistent downpours inundated 9 Midwestern states for months. Hundreds of levees failed, submerging 20 million acres and driving 1990s inland flood losses to $62.4B."
+        },
+        {
+          "year": 2005,
+          "title": "Hurricane Katrina Storm Surge Catastrophe ($200B+)",
+          "region": "Gulf Coast / New Orleans, LA",
+          "type": "surge",
+          "tag": "Deadliest Modern Surge",
+          "description": "A 28-foot storm surge overwhelmed federal levee defenses, submerging 80% of New Orleans and propelling 2000s tropical cyclone losses to an unprecedented $436.0B."
+        },
+        {
+          "year": 2012,
+          "title": "Superstorm Sandy Record Metro Surge ($90B+)",
+          "region": "New York & New Jersey Coastline",
+          "type": "surge",
+          "tag": "Historic Metro Surge",
+          "description": "A 14-foot storm surge hit at astronomical high tide, inundating Manhattan subway tunnels and coastal communities, laying bare the risk of baseline sea level rise."
+        },
+        {
+          "year": 2017,
+          "title": "Hurricane Harvey 60-Inch Cloudburst ($160B+)",
+          "region": "Houston & Southeast Texas",
+          "type": "deluge",
+          "tag": "Extreme Deluge",
+          "description": "Stalled tropical system dropped over 60 inches of rain across Greater Houston, an extreme downpour volume directly turbocharged by atmospheric warming (+7% water vapor capacity per 1°C)."
+        },
+        {
+          "year": 2021,
+          "title": "Hurricane Ida Compound Surge & Flash Flood ($85B+)",
+          "region": "Louisiana to Northeast Corridors",
+          "type": "compound",
+          "tag": "Compound Event",
+          "description": "Category 4 storm surged through Louisiana before remnant cloudbursts dumped 3.15 inches of rain in a single hour in NYC, inundating subways and urban highway networks."
+        },
+        {
+          "year": 2024,
+          "title": "Hurricane Helene Southern Appalachian Inundation ($50B+)",
+          "region": "Western North Carolina & Southeast",
+          "type": "inland",
+          "tag": "Mountain Flash Flood",
+          "description": "Atmospheric moisture combined with mountainous terrain to drop 30+ inches of rain into river valleys, causing catastrophic flash flooding hundreds of miles inland."
+        },
+        {
+          "year": 2024,
+          "title": "Sunny-Day Nuisance Flooding Reaches 5.0 Days/Year",
+          "region": "U.S. East & Gulf Coasts",
+          "type": "sea-level",
+          "tag": "Chronic Sea-Level Rise",
+          "description": "NOAA confirms national median high-tide flood frequency reached 5.0 days/year (a 10-fold surge since 1950). Southeast Atlantic and Gulf cities experience 400% to 1,100% increases since 2000 with no storm present."
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "table_name": "global_clean_power_share",
+      "topic_id": "green-energy",
+      "display_name": "World Clean Electricity Shares",
+      "data_type": "Green Energy Increases & Transition",
+      "source_org": "User-supplied CSV (original provider not specified)",
+      "source_url": "",
+      "last_updated": "Not specified in supplied file",
+      "record_count": 26,
+      "time_range": "2000–2025",
+      "unit": "% of electricity generation",
+      "frequency": "Annual",
+      "notes": "World coverage. Renewable, low-carbon, solar, and wind shares of total electricity generation. Bundled file: input/clean-energy/global_clean_power_share.csv; served through the database API, imported into SurrealDB. Low-carbon includes renewables and nuclear. Provider and publication date are not included in the supplied file.",
+      "status": "database_import",
+      "api_endpoint": "/api/datasets/global_clean_power_share",
+      "manually_maintained": false,
+      "manually_reviewed": false
+    },
+    {
+      "table_name": "tree_cover_change_2000_2020",
+      "topic_id": "reforestation",
+      "display_name": "Global and regional tree-cover loss, gain & net change",
+      "data_type": "Reforestation & Nature · Tree-cover change",
+      "source_org": "University of Maryland GLAD / WRI · Potapov et al. (2022)",
+      "source_url": "https://www.frontiersin.org/journals/remote-sensing/articles/10.3389/frsen.2022.856903/full",
+      "last_updated": "2022-04-13 · reviewed 2026-10-15",
+      "record_count": 7,
+      "time_range": "2000–2020 · World and six regions",
+      "unit": "Million hectares (Mha)",
+      "frequency": "One 20-year interval; not annual",
+      "notes": "Bundled CSV: input/forests/tree_cover_change_2000_2020.csv. Table 1 values converted from million km² to Mha (×100). Seven geography records. Loss and gain use a matched height-based dataset; gain is not restoration-only. Net change is reported independently and may differ from gain minus loss because of rounding. See input/forests/README.md for provenance and definitions.",
+      "status": "database_import",
+      "api_endpoint": "/api/datasets/tree_cover_change_2000_2020",
+      "manually_maintained": false,
+      "manually_reviewed": true
+    },
+    {
+      "table_name": "electric_transport_cars",
+      "topic_id": "electric-transportation",
+      "display_name": "IEA · Global EV Outlook 2026: Executive summary",
+      "data_type": "Electric Transportation · Curated research",
+      "source_org": "International Energy Agency",
+      "source_url": "https://www.iea.org/reports/global-ev-outlook-2026/executive-summary",
+      "last_updated": "2026 report · reviewed 2026-10-15",
+      "record_count": 1,
+      "time_range": "World · 2025",
+      "unit": "Source-specific sales / activity measures",
+      "frequency": "Research snapshot; manually reviewed",
+      "notes": "Curated research imported from input/catalog/supplemental_datasets.json into this SurrealDB table. World · 2025. Counts refer to curated mode profiles, not vehicles or annual observations. Preserve source definitions and rounded values. 2025 reported results; no 2026 forecast is presented as an observation.",
+      "status": "database_research",
+      "api_endpoint": "/api/datasets/electric_transport_cars",
+      "manually_maintained": false,
+      "manually_reviewed": true
+    },
+    {
+      "table_name": "electric_transport_road",
+      "topic_id": "electric-transportation",
+      "display_name": "IEA · Global EV Outlook 2026: Other EV modes",
+      "data_type": "Electric Transportation · Curated research",
+      "source_org": "International Energy Agency",
+      "source_url": "https://www.iea.org/reports/global-ev-outlook-2026/trends-in-other-ev-modes",
+      "last_updated": "2026 report · reviewed 2026-10-15",
+      "record_count": 3,
+      "time_range": "World · 2025",
+      "unit": "Source-specific sales / activity measures",
+      "frequency": "Research snapshot; manually reviewed",
+      "notes": "Curated research imported from input/catalog/supplemental_datasets.json into this SurrealDB table. World · 2025. Counts refer to curated mode profiles, not vehicles or annual observations. Preserve source definitions and rounded values. 2025 reported results; no 2026 forecast is presented as an observation.",
+      "status": "database_research",
+      "api_endpoint": "/api/datasets/electric_transport_road",
+      "manually_maintained": false,
+      "manually_reviewed": true
+    },
+    {
+      "table_name": "electric_transport_rail",
+      "topic_id": "electric-transportation",
+      "display_name": "IEA · The Future of Rail",
+      "data_type": "Electric Transportation · Curated research",
+      "source_org": "International Energy Agency",
+      "source_url": "https://www.iea.org/reports/the-future-of-rail",
+      "last_updated": "2019 report · reviewed 2026-10-15",
+      "record_count": 1,
+      "time_range": "World · historical activity through 2016",
+      "unit": "Source-specific sales / activity measures",
+      "frequency": "Research snapshot; manually reviewed",
+      "notes": "Curated research imported from input/catalog/supplemental_datasets.json into this SurrealDB table. World · historical activity through 2016. Counts refer to curated mode profiles, not vehicles or annual observations. Preserve source definitions and rounded values. Historical baseline, not a current rail adoption estimate.",
+      "status": "database_research",
+      "api_endpoint": "/api/datasets/electric_transport_rail",
+      "manually_maintained": false,
+      "manually_reviewed": true
+    },
+    {
+      "table_name": "electric_transport_marine",
+      "topic_id": "electric-transportation",
+      "display_name": "EMSA · Ship electrification",
+      "data_type": "Electric Transportation · Curated research",
+      "source_org": "European Maritime Safety Agency",
+      "source_url": "https://emsa.europa.eu/electrification.html",
+      "last_updated": "Publication date not specified · reviewed 2026-10-15",
+      "record_count": 1,
+      "time_range": "Maritime technology guidance · no global fleet series",
+      "unit": "Qualitative evidence",
+      "frequency": "Research snapshot; manually reviewed",
+      "notes": "Curated research imported from input/catalog/supplemental_datasets.json into this SurrealDB table. Maritime technology guidance · no global fleet series. Counts refer to curated mode profiles, not vehicles or annual observations. Preserve source definitions and rounded values. No numerical global adoption estimate is supplied.",
+      "status": "database_research",
+      "api_endpoint": "/api/datasets/electric_transport_marine",
+      "manually_maintained": false,
+      "manually_reviewed": true
+    },
+    {
+      "table_name": "co2_milestones",
+      "topic_id": "co2-rise",
+      "display_name": "Co2Rise historical milestones",
+      "data_type": "Curated historical reference records",
+      "source_org": "Existing application editorial records; individual provenance not specified",
+      "source_url": "",
+      "last_updated": "Imported from application; original revision date unspecified",
+      "record_count": 9,
+      "time_range": "-10000–2025",
+      "unit": "Milestone records; source-specific units",
+      "frequency": "Manually maintained",
+      "notes": "Migrated without changing claims from existing view constants. Stored in input/catalog/supplemental_datasets.json and SurrealDB. Not newly independently verified.",
+      "status": "database_research",
+      "api_endpoint": "/api/datasets/co2_milestones",
+      "manually_maintained": true,
+      "manually_reviewed": false
+    },
+    {
+      "table_name": "drought_milestones",
+      "topic_id": "droughts",
+      "display_name": "Droughts historical milestones",
+      "data_type": "Curated historical reference records",
+      "source_org": "Existing application editorial records; individual provenance not specified",
+      "source_url": "",
+      "last_updated": "Imported from application; original revision date unspecified",
+      "record_count": 8,
+      "time_range": "1950–2025",
+      "unit": "Milestone records; source-specific units",
+      "frequency": "Manually maintained",
+      "notes": "Migrated without changing claims from existing view constants. Stored in input/catalog/supplemental_datasets.json and SurrealDB. Not newly independently verified.",
+      "status": "database_research",
+      "api_endpoint": "/api/datasets/drought_milestones",
+      "manually_maintained": true,
+      "manually_reviewed": false
+    },
+    {
+      "table_name": "wildfire_milestones",
+      "topic_id": "wildfires",
+      "display_name": "Wildfires historical milestones",
+      "data_type": "Curated historical reference records",
+      "source_org": "Existing application editorial records; individual provenance not specified",
+      "source_url": "",
+      "last_updated": "Imported from application; original revision date unspecified",
+      "record_count": 6,
+      "time_range": "2006–2026",
+      "unit": "Milestone records; source-specific units",
+      "frequency": "Manually maintained",
+      "notes": "Migrated without changing claims from existing view constants. Stored in input/catalog/supplemental_datasets.json and SurrealDB. Not newly independently verified.",
+      "status": "database_research",
+      "api_endpoint": "/api/datasets/wildfire_milestones",
+      "manually_maintained": true,
+      "manually_reviewed": false
+    },
+    {
+      "table_name": "flood_milestones",
+      "topic_id": "flooding",
+      "display_name": "Flooding historical milestones",
+      "data_type": "Curated historical reference records",
+      "source_org": "Existing application editorial records; individual provenance not specified",
+      "source_url": "",
+      "last_updated": "Imported from application; original revision date unspecified",
+      "record_count": 9,
+      "time_range": "1950–2024",
+      "unit": "Milestone records; source-specific units",
+      "frequency": "Manually maintained",
+      "notes": "Migrated without changing claims from existing view constants. Stored in input/catalog/supplemental_datasets.json and SurrealDB. Not newly independently verified.",
+      "status": "database_research",
+      "api_endpoint": "/api/datasets/flood_milestones",
+      "manually_maintained": true,
+      "manually_reviewed": false
+    }
+  ]
+}

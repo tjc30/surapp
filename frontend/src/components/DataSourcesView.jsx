@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import {
   ArrowLeft,
-  Database,
   ExternalLink,
   Search,
   Calendar,
@@ -22,6 +21,9 @@ export default function DataSourcesView({
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedType, setSelectedType] = useState('all');
 
+  const manualSources = sources.filter(source => source.manually_maintained || source.manually_reviewed);
+  const manualOnly = selectedType === 'manual';
+
   const filteredSources = useMemo(() => {
     return sources.filter((s) => {
       const matchesSearch =
@@ -32,7 +34,7 @@ export default function DataSourcesView({
         s.data_type.toLowerCase().includes(searchQuery.toLowerCase()) ||
         s.notes.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesType =
-        selectedType === 'all' || s.table_name === selectedType;
+        selectedType === 'all' || (selectedType === 'manual' ? s.manually_maintained || s.manually_reviewed : s.table_name === selectedType);
       return matchesSearch && matchesType;
     });
   }, [sources, searchQuery, selectedType]);
@@ -43,52 +45,18 @@ export default function DataSourcesView({
 
   return (
     <div className="sources-view-container">
-      {/* Top Navigation Strip */}
-      <div className="view-nav-strip">
-        <button
-          className="btn-back-menu-prominent"
-          onClick={() => onNavigate('menu')}
-          title="Return to Main Menu"
-        >
-          <ArrowLeft size={16} />
-          <span>← Back to Main Menu</span>
-        </button>
-
-        <div className="view-breadcrumb-path">
-          <span className="breadcrumb-link" onClick={() => onNavigate('menu')}>
-            Main Menu
-          </span>
-          <span className="breadcrumb-divider">/</span>
-          <span className="breadcrumb-active">Data Sources Catalog</span>
-        </div>
-
-        <div className="view-status-tag">
-          <span className="badge-ready">
-            <Database size={12} /> SurrealDB Schema Registry
-          </span>
-        </div>
-      </div>
-
       {/* Hero Header */}
       <div className="sources-hero-card">
-        <div className="sources-hero-top">
-          <div className="sources-hero-icon">
-            <Database size={28} />
-          </div>
-          <div>
-            <h2 className="sources-hero-title">Data Sources & Metadata Catalog</h2>
-            <p className="sources-hero-desc">
-              Centralized registry of observational datasets loaded into SurrealDB. Automatically records table names, latest update timestamps, authoritative providers, scientific baselines, and notes.
-            </p>
-          </div>
-        </div>
+        <p className="sources-hero-desc">
+          Catalog of SurrealDB datasets used by the dashboard, including providers, coverage, record counts, and methodology.
+        </p>
 
         {/* Stats Row */}
         <div className="sources-stats-row">
           <div className="source-stat-box">
-            <span className="stat-box-label">Registered Tables</span>
-            <span className="stat-box-val text-amber">{sources.length} Tables</span>
-            <span className="stat-box-sub">Active in SurrealDB</span>
+            <span className="stat-box-label">Registered Datasets</span>
+            <span className="stat-box-val text-amber">{sources.length} Datasets</span>
+            <span className="stat-box-sub">Stored in SurrealDB</span>
           </div>
 
           <div className="source-stat-box">
@@ -108,8 +76,8 @@ export default function DataSourcesView({
       </div>
 
       {/* Controls Bar */}
-      <div className="menu-controls-strip">
-        <div className="search-box" style={{ minWidth: '320px' }}>
+      <div className="menu-controls-strip sources-controls-strip">
+        <div className="search-box">
           <Search size={15} className="search-icon" />
           <input
             type="text"
@@ -127,29 +95,51 @@ export default function DataSourcesView({
 
         <div className="category-filter-group">
           <button
-            className={`btn-filter ${selectedType === 'all' ? 'active' : ''}`}
+            type="button"
+            className={`selection-box-btn catalog-all-sources ${selectedType === 'all' ? 'active' : ''}`}
+            aria-pressed={selectedType === 'all'}
             onClick={() => setSelectedType('all')}
           >
-            All Sources ({sources.length})
+            <Layers size={14} /> All Sources
+            <span className="selection-count-pill">{sources.length}</span>
           </button>
           {sources.map((s) => (
             <button
               key={s.table_name}
-              className={`btn-filter ${selectedType === s.table_name ? 'active' : ''}`}
+              type="button"
+              className={`selection-box-btn ${selectedType === s.table_name ? 'active' : ''}`}
+              aria-pressed={selectedType === s.table_name}
               onClick={() => setSelectedType(s.table_name)}
             >
               table: {s.table_name}
             </button>
           ))}
+          <button
+            type="button"
+            className={`selection-box-btn ${manualOnly ? 'active' : ''}`}
+            aria-pressed={manualOnly}
+            onClick={() => setSelectedType('manual')}
+          >
+            <TableIcon size={14} /> Manual Records
+            <span className="selection-count-pill">{manualSources.length}</span>
+          </button>
         </div>
       </div>
 
       {/* Sources Catalog Table */}
       <div className="table-wrapper">
         <div className="table-caption-box">
-          <h3>Registered Data Tables in SurrealDB</h3>
+          <h3>{manualOnly ? 'Manually Maintained & Manually Reviewed Sources' : 'Registered Data Sources'}</h3>
+          {manualOnly && (
+            <div className="manual-source-explanation">
+              <p><strong>Manually Maintained:</strong> A person edits or replaces the dataset when changes are needed; updates are not automatically obtained from the provider.</p>
+              <p><strong>Manually Reviewed:</strong> A person checked the source and its interpretation for a dated snapshot. Review does not necessarily change the data or keep it current.</p>
+              <p>A source can be both. These labels describe different activities; neither guarantees independent verification. Missing labels mean the activity is not documented.</p>
+              <p>{manualSources.length} qualifying datasets · {filteredSources.length} shown after search filters. Counts below describe records in the source tables.</p>
+            </div>
+          )}
           <p>
-            Synced from <code>data_sources</code> table • Axum <code>/api/sources</code>
+            SurrealDB registry: <code>data_sources</code> • <code>/api/sources</code>
           </p>
         </div>
 
@@ -157,7 +147,8 @@ export default function DataSourcesView({
           <table className="custom-table sources-table">
             <thead>
               <tr>
-                <th>Table Name</th>
+                <th>Table / Dataset Name</th>
+                {manualOnly && <th scope="col">Manual Handling</th>}
                 <th>Data Type & Topic</th>
                 <th>Authoritative Source</th>
                 <th>Timespan & Records</th>
@@ -167,17 +158,27 @@ export default function DataSourcesView({
               </tr>
             </thead>
             <tbody>
+              {filteredSources.length === 0 && <tr><td colSpan={manualOnly ? 8 : 7}>{loading ? 'Loading catalog…' : 'No matching data sources.'}</td></tr>}
               {filteredSources.map((s) => (
                 <tr key={s.table_name}>
                   <td>
                     <div className="table-pill-wrap">
                       <code className="code-pill code-pill-table">{s.table_name}</code>
                       <span className={`status-pill ${s.status.includes('automated') ? 'pill-green' : 'pill-amber'}`}>
-                        {s.status.includes('automated') ? 'API Feed' : 'Local File'}
+                        {s.status.includes('automated') ? 'API Feed' : s.status.startsWith('database') ? 'Database' : 'Imported File'}
                       </span>
                     </div>
                   </td>
 
+                  {manualOnly && (
+                    <td>
+                      <div className="manual-source-labels">
+                        {s.manually_maintained && <span className="status-pill pill-amber">Manually Maintained</span>}
+                        {s.manually_reviewed && <span className="status-pill pill-green">Manually Reviewed</span>}
+                        {!s.manually_reviewed && <span className="source-sub-text">Review not documented</span>}
+                      </div>
+                    </td>
+                  )}
                   <td>
                     <div className="source-name-cell">
                       <strong>{s.display_name}</strong>

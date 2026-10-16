@@ -31,7 +31,7 @@ echo "[2/5] Checking SurrealDB tables..."
 TEMPS_COUNT=$(curl -s -u root:root -H "surreal-ns: main" -H "surreal-db: main" -H "Accept: application/json" -d "SELECT count() FROM temps GROUP ALL;" http://127.0.0.1:8000/sql 2>/dev/null | grep -o '"count":[0-9]*' | cut -d: -f2 || echo "0")
 if [ -z "$TEMPS_COUNT" ] || [ "$TEMPS_COUNT" -eq 0 ] 2>/dev/null; then
     echo "      Loading temperature data into SurrealDB..."
-    python3 "$DIR/load_temps.py" --ns main --db main
+    python3 "$DIR/python/load_temps.py" --ns main --db main
 else
     echo "      Table 'temps': $TEMPS_COUNT records loaded."
 fi
@@ -39,7 +39,7 @@ fi
 CO2_COUNT=$(curl -s -u root:root -H "surreal-ns: main" -H "surreal-db: main" -H "Accept: application/json" -d "SELECT count() FROM co2 GROUP ALL;" http://127.0.0.1:8000/sql 2>/dev/null | grep -o '"count":[0-9]*' | cut -d: -f2 || echo "0")
 if [ -z "$CO2_COUNT" ] || [ "$CO2_COUNT" -eq 0 ] 2>/dev/null; then
     echo "      Loading CO2 data with metadata into SurrealDB..."
-    python3 "$DIR/load_co2.py" --ns main --db main
+    python3 "$DIR/python/load_co2.py" --ns main --db main
 else
     echo "      Table 'co2': $CO2_COUNT records loaded."
 fi
@@ -47,7 +47,7 @@ fi
 WILDFIRES_COUNT=$(curl -s -u root:root -H "surreal-ns: main" -H "surreal-db: main" -H "Accept: application/json" -d "SELECT count() FROM wildfires GROUP ALL;" http://127.0.0.1:8000/sql 2>/dev/null | grep -o '"count":[0-9]*' | cut -d: -f2 || echo "0")
 if [ -z "$WILDFIRES_COUNT" ] || [ "$WILDFIRES_COUNT" -eq 0 ] 2>/dev/null; then
     echo "      Loading Canadian wildfires data into SurrealDB..."
-    python3 "$DIR/load_wildfires.py" --ns main --db main
+    python3 "$DIR/python/load_wildfires.py" --ns main --db main
 else
     echo "      Table 'wildfires': $WILDFIRES_COUNT records loaded."
 fi
@@ -55,7 +55,7 @@ fi
 DROUGHT_COUNT=$(curl -s -u root:root -H "surreal-ns: main" -H "surreal-db: main" -H "Accept: application/json" -d "SELECT count() FROM drought_pdsi GROUP ALL;" http://127.0.0.1:8000/sql 2>/dev/null | grep -o '"count":[0-9]*' | cut -d: -f2 || echo "0")
 if [ -z "$DROUGHT_COUNT" ] || [ "$DROUGHT_COUNT" -eq 0 ] 2>/dev/null; then
     echo "      Loading Drought PDSI data into SurrealDB..."
-    "$DIR/.venv/bin/python" "$DIR/drought-plott.py"
+    "$DIR/.venv/bin/python" "$DIR/python/drought-plott.py"
 else
     echo "      Table 'drought_pdsi': $DROUGHT_COUNT records loaded."
 fi
@@ -63,10 +63,13 @@ fi
 FLOOD_COUNT=$(curl -s -u root:root -H "surreal-ns: main" -H "surreal-db: main" -H "Accept: application/json" -d "SELECT count() FROM flood_trends GROUP ALL;" http://127.0.0.1:8000/sql 2>/dev/null | grep -o '"count":[0-9]*' | cut -d: -f2 || echo "0")
 if [ -z "$FLOOD_COUNT" ] || [ "$FLOOD_COUNT" -eq 0 ] 2>/dev/null; then
     echo "      Loading Flooding datasets into SurrealDB..."
-    python3 "$DIR/load_flooding.py" --ns main --db main
+    python3 "$DIR/python/load_flooding.py" --ns main --db main
 else
     echo "      Table 'flood_trends': $FLOOD_COUNT records loaded."
 fi
+
+# Import new area datasets without replacing populated tables.
+python3 "$DIR/python/load_area_data.py" --missing-only
 
 # 3. Build frontend bundle (ensures latest UI with CO2 tab is ready)
 echo "[3/5] Building frontend assets..."

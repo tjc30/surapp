@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """
-Loader script to import NOAA World Temperature data into SurrealDB.
+Loader script to import NOAA CO2 mean data into SurrealDB with rich metadata.
 """
 
 import argparse
+from pathlib import Path
 import base64
 import csv
 import json
@@ -12,11 +13,9 @@ import sys
 import urllib.error
 import urllib.request
 
+ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CSV_PATHS = [
-    '/home/timu/surapp/input/noaa/temps/temps 1850-2026.csv',
-    '/home/timu/surapp/input/NOAA world temps/temps 1850-2026.csv',
-    './input/noaa/temps/temps 1850-2026.csv',
-    './input/NOAA world temps/temps 1850-2026.csv',
+    str(ROOT / 'input/CO2/NOAA CO2 mean 1959-2025.csv'),
 ]
 
 def find_default_csv():
@@ -51,15 +50,14 @@ def execute_surql(url: str, ns: str, db: str, user: str, password: str, query: s
         raise RuntimeError(f"Connection error connecting to {endpoint}: {e.reason}")
 
 def main():
-    parser = argparse.ArgumentParser(description='Load NOAA temperature CSV into SurrealDB')
-    parser.add_argument('csv_file', nargs='?', default=None, help='Path to CSV file')
-    parser.add_argument('--endpoint', default='http://localhost:8000', help='SurrealDB endpoint URL')
+    parser = argparse.ArgumentParser(description='Load NOAA CO2 CSV into SurrealDB with metadata')
+    parser.add_argument('csv_file', nargs='?', default=None, help='Path to CSV')
+    parser.add_argument('--endpoint', default='http://localhost:8000', help='SurrealDB endpoint')
     parser.add_argument('--ns', default='main', help='SurrealDB namespace')
     parser.add_argument('--db', default='main', help='SurrealDB database')
-    parser.add_argument('--username', '-u', default='root', help='SurrealDB username')
-    parser.add_argument('--password', '-p', default='root', help='SurrealDB password')
-    parser.add_argument('--table', '-t', default='temps', help='Table name')
-    parser.add_argument('--alias-table', default='temperature_anomaly', help='Alias view table name')
+    parser.add_argument('--username', '-u', default='root', help='SurrealDB user')
+    parser.add_argument('--password', '-p', default='root', help='SurrealDB pass')
+    parser.add_argument('--table', '-t', default='co2', help='Table name')
     parser.add_argument('--drop', action='store_true', help='Drop table before loading')
     args = parser.parse_args()
 
@@ -67,69 +65,76 @@ def main():
     if not csv_path:
         csv_path = find_default_csv()
     if not csv_path or not os.path.exists(csv_path):
-        print(f"Error: CSV file not found. Checked: {DEFAULT_CSV_PATHS}", file=sys.stderr)
+        print(f"Error: CSV not found. Checked: {DEFAULT_CSV_PATHS}", file=sys.stderr)
         sys.exit(1)
 
     print(f"Using CSV file: {csv_path}")
     print(f"Target SurrealDB: {args.endpoint} (NS: {args.ns}, DB: {args.db}, Table: {args.table})")
 
-    # Read and parse CSV rows
     records = []
     with open(csv_path, mode='r', encoding='utf-8') as f:
-        reader = csv.DictReader(f)
-        for row_idx, row in enumerate(reader, start=2):
-            try:
-                year = int(row['Year'])
-                avg = float(row['Average'])
-                lower = float(row['Lower bound'])
-                upper = float(row['Upper bound'])
-                entity = row.get('Entity', 'World').strip()
-                code = row.get('Code', 'OWID_WRL').strip()
+        lines = [line.strip() for line in f if line.strip()]
+
+    start_idx = 0
+    if len(lines) > 0 and 'year' not in lines[0].lower():
+        start_idx = 1
+
+    reader = csv.DictReader(lines[start_idx:])
+    for row_idx, row in enumerate(reader, start=start_idx + 1):
+        try:
+            year_val = None
+            co2_val = None
+            for k, v in row.items():
+                if not k or v is None:
+                    continue
+                k_clean = k.strip().lower()
+                if 'year' in k_clean:
+                    year_val = int(v.strip())
+                elif 'co2' in k_clean or 'ppm' in k_clean:
+                    co2_val = float(v.strip())
+
+            if year_val is not None and co2_val is not None:
                 records.append({
-                    'id': f"{args.table}:{year}",
-                    'entity': entity,
-                    'code': code,
-                    'year': year,
-                    'average': avg,
-                    'lower_bound': lower,
-                    'upper_bound': upper
+                    'id': f"{args.table}:{year_val}",
+                    'entity': 'World',
+                    'source': 'NOAA Global Monitoring Laboratory',
+                    'location': 'Mauna Loa, Hawaii',
+                    'unit': 'ppm',
+                    'year': year_val,
+                    'co2_ppm': co2_val
                 })
-            except Exception as e:
-                print(f"Error parsing row {row_idx}: {e}", file=sys.stderr)
-                sys.exit(1)
+        except Exception as e:
+            print(f"Error parsing row {row_idx}: {e}", file=sys.stderr)
 
-    print(f"Parsed {len(records)} temperature records (Years {records[0]['year']} to {records[-1]['year']}).")
+    print(f"Parsed {len(records)} CO2 records with metadata (Years {records[0]['year']} to {records[-1]['year']}).")
 
-    # Prepare schema statements
     schema_statements = []
     if args.drop:
-        schema_statements.append(f"REMOVE TABLE IF EXISTS {args.alias_table};")
         schema_statements.append(f"REMOVE TABLE IF EXISTS {args.table};")
 
     schema_statements.append(f"DEFINE TABLE IF NOT EXISTS {args.table} SCHEMAFULL;")
     schema_statements.append(f"DEFINE FIELD IF NOT EXISTS entity ON TABLE {args.table} TYPE string;")
-    schema_statements.append(f"DEFINE FIELD IF NOT EXISTS code ON TABLE {args.table} TYPE string;")
+    schema_statements.append(f"DEFINE FIELD IF NOT EXISTS source ON TABLE {args.table} TYPE string;")
+    schema_statements.append(f"DEFINE FIELD IF NOT EXISTS location ON TABLE {args.table} TYPE string;")
+    schema_statements.append(f"DEFINE FIELD IF NOT EXISTS unit ON TABLE {args.table} TYPE string;")
     schema_statements.append(f"DEFINE FIELD IF NOT EXISTS year ON TABLE {args.table} TYPE int;")
-    schema_statements.append(f"DEFINE FIELD IF NOT EXISTS average ON TABLE {args.table} TYPE float;")
-    schema_statements.append(f"DEFINE FIELD IF NOT EXISTS lower_bound ON TABLE {args.table} TYPE float;")
-    schema_statements.append(f"DEFINE FIELD IF NOT EXISTS upper_bound ON TABLE {args.table} TYPE float;")
+    schema_statements.append(f"DEFINE FIELD IF NOT EXISTS co2_ppm ON TABLE {args.table} TYPE float;")
     schema_statements.append(f"DEFINE INDEX IF NOT EXISTS idx_{args.table}_year ON TABLE {args.table} COLUMNS year;")
 
     schema_query = "\n".join(schema_statements)
-    print("Applying schema definitions...")
+    print("Applying schema definitions with metadata fields...")
     execute_surql(args.endpoint, args.ns, args.db, args.username, args.password, schema_query)
 
-    # Batch UPSERT records inside a transaction
     print(f"Loading {len(records)} records into table '{args.table}'...")
     batch_statements = ["BEGIN TRANSACTION;"]
     for r in records:
         content_json = json.dumps({
             'entity': r['entity'],
-            'code': r['code'],
+            'source': r['source'],
+            'location': r['location'],
+            'unit': r['unit'],
             'year': r['year'],
-            'average': r['average'],
-            'lower_bound': r['lower_bound'],
-            'upper_bound': r['upper_bound']
+            'co2_ppm': r['co2_ppm']
         })
         batch_statements.append(f"UPSERT {r['id']} CONTENT {content_json};")
     batch_statements.append("COMMIT TRANSACTION;")
@@ -137,13 +142,6 @@ def main():
     batch_query = "\n".join(batch_statements)
     execute_surql(args.endpoint, args.ns, args.db, args.username, args.password, batch_query)
 
-    # Define alias view if requested
-    if args.alias_table and args.alias_table != args.table:
-        print(f"Creating alias view '{args.alias_table}' referencing '{args.table}'...")
-        alias_sql = f"DEFINE TABLE IF NOT EXISTS {args.alias_table} AS SELECT * FROM {args.table};"
-        execute_surql(args.endpoint, args.ns, args.db, args.username, args.password, alias_sql)
-
-    # Verify counts and samples
     verify_sql = f"""
     SELECT count() FROM {args.table} GROUP ALL;
     SELECT * FROM {args.table} ORDER BY year ASC LIMIT 2;

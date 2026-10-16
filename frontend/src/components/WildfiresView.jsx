@@ -1,3 +1,5 @@
+import useDataset from '../hooks/useDataset';
+import { DatasetStatus } from './DatasetView';
 import AreaDataStatus from './AreaDataStatus';
 import React, { useState, useMemo, useEffect } from 'react';
 import {
@@ -50,56 +52,6 @@ ChartJS.register(
 );
 
 // Key historical wildfire milestones in Canada (2000-2026)
-const WILDFIRE_MILESTONES = [
-  {
-    year: 2006,
-    title: 'Peak Fire Frequency (9,719 Fires)',
-    fires: 9719,
-    acres: 5.19,
-    description: 'Highest total count of ignitions in the 21st century dataset, but moderate acreage burned.',
-    tag: 'Ignition Peak',
-  },
-  {
-    year: 2014,
-    title: 'Northwest Territories Extreme Season',
-    fires: 5016,
-    acres: 11.23,
-    description: 'Massive boreal forest fires in the subarctic burning over 11 million acres.',
-    tag: 'Northern Season',
-  },
-  {
-    year: 2016,
-    title: 'Fort McMurray Horse River Megafire',
-    fires: 5259,
-    acres: 3.26,
-    description: 'Destructive urban-wildland interface blaze forcing the evacuation of 88,000 residents in Alberta.',
-    tag: 'Community Impact',
-  },
-  {
-    year: 2023,
-    title: 'Unprecedented Historic Record (43.51M Acres)',
-    fires: 6837,
-    acres: 43.51,
-    description: 'The most catastrophic wildfire season in modern Canadian history. More than double previous records; smoke blanketed eastern North America and crossed the Atlantic.',
-    tag: 'All-Time Record',
-  },
-  {
-    year: 2025,
-    title: 'Second Most Severe Season (21.25M Acres)',
-    fires: 6199,
-    acres: 21.25,
-    description: 'Continued megafire conditions across British Columbia, Alberta, and the Northwest Territories.',
-    tag: 'Extreme Megafires',
-  },
-  {
-    year: 2026,
-    title: '2026 Season (As of Sept 2026)',
-    fires: 5248,
-    acres: 11.20,
-    description: 'Year-to-date data as of September 2026 indicates continued elevated fire activity (11.20 million acres burned across 5,248 fires).',
-    tag: 'Current Season YTD',
-  },
-];
 
 export default function WildfiresView({
   data: initialData = [],
@@ -109,6 +61,9 @@ export default function WildfiresView({
   sources = [],
   onRefresh,
 }) {
+  const milestoneState = useDataset('wildfire_milestones');
+  const WILDFIRE_MILESTONES = useMemo(() => [...milestoneState.data].sort((a, b) => a.year - b.year), [milestoneState.data]);
+
   const [data, setData] = useState(initialData);
   const [loading, setLoading] = useState(initialLoading);
   const [error, setError] = useState(initialError);
@@ -492,6 +447,7 @@ export default function WildfiresView({
 
   return (
     <div className="wildfires-view-container">
+      <DatasetStatus {...milestoneState} empty={!milestoneState.data.length} />
       {/* Dataset status appears in the shared header. */}
       <AreaDataStatus>
         <span className="badge-ready">
@@ -506,12 +462,9 @@ export default function WildfiresView({
             <Flame size={36} className="flame-hero-icon" />
           </div>
           <div className="wildfires-hero-text">
-            <div className="placeholder-category-pill">
+            <div className="placeholder-category-pill area-hero-category">
               Disaster & Megafire Hazards • Canada
             </div>
-            <h2 className="wildfires-hero-title">
-              Forest Fires in Canada (2000–2026)
-            </h2>
             <p className="wildfires-hero-desc">
               Annual record of Canadian forest fire counts and burned land area in <strong>million acres</strong>,
               sourced from the Canadian Wildland Fire Information System (CWFIS / NRCan).
